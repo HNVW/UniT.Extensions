@@ -1,5 +1,6 @@
 {
   "name": "UniT.Extensions.Addressables",
+  "overrideReferences": true,
   "references": [
     "Unity.ResourceManager",
     "UniTask"

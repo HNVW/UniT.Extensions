@@ -1,5 +1,7 @@
 {
   "name": "UniT.Extensions.MessagePipe",
+  "overrideReferences": true,
+  "noEngineReferences": true,
   "references": [
     "MessagePipe",
     "UniTask"

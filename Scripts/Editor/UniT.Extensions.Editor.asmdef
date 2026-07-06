@@ -1,5 +1,6 @@
 {
   "name": "UniT.Extensions.Editor",
+  "overrideReferences": true,
   "references": [
     "UniT.Extensions"
   ],

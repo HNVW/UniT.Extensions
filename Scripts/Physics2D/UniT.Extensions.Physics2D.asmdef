@@ -1,5 +1,6 @@
 {
   "name": "UniT.Extensions.Physics2D",
+  "overrideReferences": true,
   "references": [
     "UniT.Extensions"
   ],
