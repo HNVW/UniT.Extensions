@@ -707,14 +707,14 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<IGrouping<TFirst, (TFirst, TSecond)>> GroupByFirst<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples)
         {
-            return tuples.GroupBy(tuple => tuple.Item1);
+            return tuples.GroupBy(static tuple => tuple.Item1);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<IGrouping<TFirst, (TFirst, TSecond, TThird)>> GroupByFirst<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples)
         {
-            return tuples.GroupBy(tuple => tuple.Item1);
+            return tuples.GroupBy(static tuple => tuple.Item1);
         }
 
         [Pure]
@@ -735,14 +735,14 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<IGrouping<TSecond, (TFirst, TSecond)>> GroupBySecond<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples)
         {
-            return tuples.GroupBy(tuple => tuple.Item2);
+            return tuples.GroupBy(static tuple => tuple.Item2);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<IGrouping<TSecond, (TFirst, TSecond, TThird)>> GroupBySecond<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples)
         {
-            return tuples.GroupBy(tuple => tuple.Item2);
+            return tuples.GroupBy(static tuple => tuple.Item2);
         }
 
         [Pure]
@@ -763,7 +763,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<IGrouping<TThird, (TFirst, TSecond, TThird)>> GroupByThird<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples)
         {
-            return tuples.GroupBy(tuple => tuple.Item3);
+            return tuples.GroupBy(static tuple => tuple.Item3);
         }
 
         [Pure]
@@ -791,14 +791,14 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond)> OrderByFirst<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, IComparer<TFirst>? comparer = null)
         {
-            return tuples.OrderBy(tuple => tuple.Item1, comparer);
+            return tuples.OrderBy(static tuple => tuple.Item1, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond, TThird)> OrderByFirst<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, IComparer<TFirst>? comparer = null)
         {
-            return tuples.OrderBy(tuple => tuple.Item1, comparer);
+            return tuples.OrderBy(static tuple => tuple.Item1, comparer);
         }
 
         [Pure]
@@ -819,14 +819,14 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond)> OrderBySecond<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, IComparer<TSecond>? comparer = null)
         {
-            return tuples.OrderBy(tuple => tuple.Item2, comparer);
+            return tuples.OrderBy(static tuple => tuple.Item2, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond, TThird)> OrderBySecond<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, IComparer<TSecond>? comparer = null)
         {
-            return tuples.OrderBy(tuple => tuple.Item2, comparer);
+            return tuples.OrderBy(static tuple => tuple.Item2, comparer);
         }
 
         [Pure]
@@ -847,7 +847,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond, TThird)> OrderByThird<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, IComparer<TThird>? comparer = null)
         {
-            return tuples.OrderBy(tuple => tuple.Item3, comparer);
+            return tuples.OrderBy(static tuple => tuple.Item3, comparer);
         }
 
         [Pure]
@@ -875,14 +875,14 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond)> OrderByDescendingFirst<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, IComparer<TFirst>? comparer = null)
         {
-            return tuples.OrderByDescending(tuple => tuple.Item1, comparer);
+            return tuples.OrderByDescending(static tuple => tuple.Item1, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond, TThird)> OrderByDescendingFirst<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, IComparer<TFirst>? comparer = null)
         {
-            return tuples.OrderByDescending(tuple => tuple.Item1, comparer);
+            return tuples.OrderByDescending(static tuple => tuple.Item1, comparer);
         }
 
         [Pure]
@@ -903,14 +903,14 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond)> OrderByDescendingSecond<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, IComparer<TSecond>? comparer = null)
         {
-            return tuples.OrderByDescending(tuple => tuple.Item2, comparer);
+            return tuples.OrderByDescending(static tuple => tuple.Item2, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond, TThird)> OrderByDescendingSecond<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, IComparer<TSecond>? comparer = null)
         {
-            return tuples.OrderByDescending(tuple => tuple.Item2, comparer);
+            return tuples.OrderByDescending(static tuple => tuple.Item2, comparer);
         }
 
         [Pure]
@@ -931,7 +931,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond, TThird)> OrderByDescendingThird<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, IComparer<TThird>? comparer = null)
         {
-            return tuples.OrderByDescending(tuple => tuple.Item3, comparer);
+            return tuples.OrderByDescending(static tuple => tuple.Item3, comparer);
         }
 
         [Pure]
@@ -959,14 +959,14 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond)> ThenByFirst<TFirst, TSecond>(this IOrderedEnumerable<(TFirst, TSecond)> tuples, IComparer<TFirst>? comparer = null)
         {
-            return tuples.ThenBy(tuple => tuple.Item1, comparer);
+            return tuples.ThenBy(static tuple => tuple.Item1, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond, TThird)> ThenByFirst<TFirst, TSecond, TThird>(this IOrderedEnumerable<(TFirst, TSecond, TThird)> tuples, IComparer<TFirst>? comparer = null)
         {
-            return tuples.ThenBy(tuple => tuple.Item1, comparer);
+            return tuples.ThenBy(static tuple => tuple.Item1, comparer);
         }
 
         [Pure]
@@ -987,14 +987,14 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond)> ThenBySecond<TFirst, TSecond>(this IOrderedEnumerable<(TFirst, TSecond)> tuples, IComparer<TSecond>? comparer = null)
         {
-            return tuples.ThenBy(tuple => tuple.Item2, comparer);
+            return tuples.ThenBy(static tuple => tuple.Item2, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond, TThird)> ThenBySecond<TFirst, TSecond, TThird>(this IOrderedEnumerable<(TFirst, TSecond, TThird)> tuples, IComparer<TSecond>? comparer = null)
         {
-            return tuples.ThenBy(tuple => tuple.Item2, comparer);
+            return tuples.ThenBy(static tuple => tuple.Item2, comparer);
         }
 
         [Pure]
@@ -1015,7 +1015,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond, TThird)> ThenByThird<TFirst, TSecond, TThird>(this IOrderedEnumerable<(TFirst, TSecond, TThird)> tuples, IComparer<TThird>? comparer = null)
         {
-            return tuples.ThenBy(tuple => tuple.Item3, comparer);
+            return tuples.ThenBy(static tuple => tuple.Item3, comparer);
         }
 
         [Pure]
@@ -1043,14 +1043,14 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond)> ThenByDescendingFirst<TFirst, TSecond>(this IOrderedEnumerable<(TFirst, TSecond)> tuples, IComparer<TFirst>? comparer = null)
         {
-            return tuples.ThenByDescending(tuple => tuple.Item1, comparer);
+            return tuples.ThenByDescending(static tuple => tuple.Item1, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond, TThird)> ThenByDescendingFirst<TFirst, TSecond, TThird>(this IOrderedEnumerable<(TFirst, TSecond, TThird)> tuples, IComparer<TFirst>? comparer = null)
         {
-            return tuples.ThenByDescending(tuple => tuple.Item1, comparer);
+            return tuples.ThenByDescending(static tuple => tuple.Item1, comparer);
         }
 
         [Pure]
@@ -1071,14 +1071,14 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond)> ThenByDescendingSecond<TFirst, TSecond>(this IOrderedEnumerable<(TFirst, TSecond)> tuples, IComparer<TSecond>? comparer = null)
         {
-            return tuples.ThenByDescending(tuple => tuple.Item2, comparer);
+            return tuples.ThenByDescending(static tuple => tuple.Item2, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond, TThird)> ThenByDescendingSecond<TFirst, TSecond, TThird>(this IOrderedEnumerable<(TFirst, TSecond, TThird)> tuples, IComparer<TSecond>? comparer = null)
         {
-            return tuples.ThenByDescending(tuple => tuple.Item2, comparer);
+            return tuples.ThenByDescending(static tuple => tuple.Item2, comparer);
         }
 
         [Pure]
@@ -1099,7 +1099,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<(TFirst, TSecond, TThird)> ThenByDescendingThird<TFirst, TSecond, TThird>(this IOrderedEnumerable<(TFirst, TSecond, TThird)> tuples, IComparer<TThird>? comparer = null)
         {
-            return tuples.ThenByDescending(tuple => tuple.Item3, comparer);
+            return tuples.ThenByDescending(static tuple => tuple.Item3, comparer);
         }
 
         [Pure]
@@ -1113,7 +1113,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static (List<TFirst>, List<TSecond>) Unzip<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples)
         {
-            return tuples.Aggregate((new List<TFirst>(), new List<TSecond>()), (lists, tuple) =>
+            return tuples.Aggregate((new List<TFirst>(), new List<TSecond>()), static (lists, tuple) =>
             {
                 lists.Item1.Add(tuple.Item1);
                 lists.Item2.Add(tuple.Item2);
@@ -1125,7 +1125,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static (List<TFirst>, List<TSecond>, List<TThird>) Unzip<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples)
         {
-            return tuples.Aggregate((new List<TFirst>(), new List<TSecond>(), new List<TThird>()), (lists, tuple) =>
+            return tuples.Aggregate((new List<TFirst>(), new List<TSecond>(), new List<TThird>()), static (lists, tuple) =>
             {
                 lists.Item1.Add(tuple.Item1);
                 lists.Item2.Add(tuple.Item2);
@@ -1180,7 +1180,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Dictionary<TFirst, TSecond> ToDictionary<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples) where TFirst : notnull
         {
-            return tuples.ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
+            return tuples.ToDictionary(static tuple => tuple.Item1, static tuple => tuple.Item2);
         }
     }
 }

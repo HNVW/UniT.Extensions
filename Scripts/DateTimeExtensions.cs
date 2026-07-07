@@ -11,7 +11,7 @@ namespace UniT.Extensions
         [Pure]
         public static DateTime GetFirstDayOfWeek(this DateTime dateTime, DayOfWeek firstDayOfWeek)
         {
-            var diff           = dateTime.DayOfWeek - firstDayOfWeek;
+            var diff = dateTime.DayOfWeek - firstDayOfWeek;
             if (diff < 0) diff += 7;
             return dateTime.AddDays(-1 * diff).Date;
         }

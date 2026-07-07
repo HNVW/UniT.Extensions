@@ -12,7 +12,6 @@ namespace UniT.Extensions
         private T[] items;
         private int head;
         private int tail;
-        private int count;
 
         public Deque() : this(4) { }
 
@@ -28,18 +27,18 @@ namespace UniT.Extensions
             {
                 this.items = new T[collection.Count > 0 ? collection.Count : 4];
                 collection.CopyTo(this.items, 0);
-                this.count = collection.Count;
-                this.tail  = collection.Count;
+                this.Count = collection.Count;
+                this.tail = collection.Count;
             }
             else
             {
                 this.items = items.ToArray();
-                this.count = this.items.Length;
-                this.tail  = this.count;
+                this.Count = this.items.Length;
+                this.tail = this.Count;
             }
         }
 
-        public int Count => this.count;
+        public int Count { get; private set; }
 
         private int Capacity => this.items.Length;
 
@@ -49,14 +48,14 @@ namespace UniT.Extensions
 
         private void EnsureCapacity()
         {
-            if (this.count < this.Capacity) return;
+            if (this.Count < this.Capacity) return;
 
             var newCapacity = this.Capacity * 2;
-            var newItems    = new T[newCapacity];
+            var newItems = new T[newCapacity];
 
             if (this.head < this.tail)
             {
-                Array.Copy(this.items, this.head, newItems, 0, this.count);
+                Array.Copy(this.items, this.head, newItems, 0, this.Count);
             }
             else
             {
@@ -66,41 +65,41 @@ namespace UniT.Extensions
             }
 
             this.items = newItems;
-            this.head  = 0;
-            this.tail  = this.count;
+            this.head = 0;
+            this.tail = this.Count;
         }
 
         public void PushFront(T item)
         {
             this.EnsureCapacity();
-            this.head             = this.Previous(this.head);
+            this.head = this.Previous(this.head);
             this.items[this.head] = item;
-            ++this.count;
+            ++this.Count;
         }
 
         public void PushBack(T item)
         {
             this.EnsureCapacity();
             this.items[this.tail] = item;
-            this.tail             = this.Next(this.tail);
-            ++this.count;
+            this.tail = this.Next(this.tail);
+            ++this.Count;
         }
 
         public bool TryPopFront([MaybeNullWhen(false)] out T item)
         {
             if (!this.TryPeekFront(out item)) return false;
             this.items[this.head] = default!;
-            this.head             = this.Next(this.head);
-            --this.count;
+            this.head = this.Next(this.head);
+            --this.Count;
             return true;
         }
 
         public bool TryPopBack([MaybeNullWhen(false)] out T item)
         {
             if (!this.TryPeekBack(out item)) return false;
-            this.tail             = this.Previous(this.tail);
+            this.tail = this.Previous(this.tail);
             this.items[this.tail] = default!;
-            --this.count;
+            --this.Count;
             return true;
         }
 
@@ -108,23 +107,23 @@ namespace UniT.Extensions
         {
             var item = this.PeekFront();
             this.items[this.head] = default!;
-            this.head             = this.Next(this.head);
-            --this.count;
+            this.head = this.Next(this.head);
+            --this.Count;
             return item;
         }
 
         public T PopBack()
         {
             var item = this.PeekBack();
-            this.tail             = this.Previous(this.tail);
+            this.tail = this.Previous(this.tail);
             this.items[this.tail] = default!;
-            --this.count;
+            --this.Count;
             return item;
         }
 
         public bool TryPeekFront([MaybeNullWhen(false)] out T item)
         {
-            if (this.count is 0)
+            if (this.Count is 0)
             {
                 item = default;
                 return false;
@@ -135,7 +134,7 @@ namespace UniT.Extensions
 
         public bool TryPeekBack([MaybeNullWhen(false)] out T item)
         {
-            if (this.count is 0)
+            if (this.Count is 0)
             {
                 item = default;
                 return false;
@@ -146,13 +145,13 @@ namespace UniT.Extensions
 
         public T PeekFront()
         {
-            if (this.count is 0) throw new InvalidOperationException("Deque is empty");
+            if (this.Count is 0) throw new InvalidOperationException("Deque is empty");
             return this.items[this.head];
         }
 
         public T PeekBack()
         {
-            if (this.count is 0) throw new InvalidOperationException("Deque is empty");
+            if (this.Count is 0) throw new InvalidOperationException("Deque is empty");
             return this.items[this.Previous(this.tail)];
         }
 
@@ -160,7 +159,7 @@ namespace UniT.Extensions
         {
             if (this.head < this.tail)
             {
-                Array.Clear(this.items, this.head, this.count);
+                Array.Clear(this.items, this.head, this.Count);
             }
             else
             {
@@ -168,14 +167,14 @@ namespace UniT.Extensions
                 Array.Clear(this.items, 0, this.tail);
             }
 
-            this.head  = 0;
-            this.tail  = 0;
-            this.count = 0;
+            this.head = 0;
+            this.tail = 0;
+            this.Count = 0;
         }
 
         public bool Contains(T item)
         {
-            if (this.count is 0) return false;
+            if (this.Count is 0) return false;
             if (this.head < this.tail)
             {
                 for (var i = this.head; i < this.tail; ++i)
@@ -199,7 +198,7 @@ namespace UniT.Extensions
 
         public IEnumerator<T> GetEnumerator()
         {
-            if (this.count is 0) yield break;
+            if (this.Count is 0) yield break;
             if (this.head < this.tail)
             {
                 for (var i = this.head; i < this.tail; ++i) yield return this.items[i];
@@ -219,12 +218,12 @@ namespace UniT.Extensions
         {
             if (array is null) throw new ArgumentNullException(nameof(array));
             if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex), "`arrayIndex` must be >= 0");
-            if (this.count > array.Length - arrayIndex) throw new ArgumentException("Destination array is not long enough");
+            if (this.Count > array.Length - arrayIndex) throw new ArgumentException("Destination array is not long enough");
 
-            if (this.count is 0) return;
+            if (this.Count is 0) return;
             if (this.head < this.tail)
             {
-                Array.Copy(this.items, this.head, array, arrayIndex, this.count);
+                Array.Copy(this.items, this.head, array, arrayIndex, this.Count);
             }
             else
             {

@@ -28,15 +28,15 @@ namespace UniT.Extensions
         public static string Trim(this string str, string trimStr)
         {
             var isTrimmed = false;
-            var span      = str.AsSpan();
+            var span = str.AsSpan();
             if (span.StartsWith(trimStr))
             {
-                span      = span[trimStr.Length..];
+                span = span[trimStr.Length..];
                 isTrimmed = true;
             }
             if (span.EndsWith(trimStr))
             {
-                span      = span[..^trimStr.Length];
+                span = span[..^trimStr.Length];
                 isTrimmed = true;
             }
             return isTrimmed ? span.ToString() : str;

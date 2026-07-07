@@ -99,14 +99,14 @@ namespace UniT.Extensions
             using var enumerator = enumerable.GetEnumerator();
             if (!enumerator.MoveNext()) return defaultValueFactory();
             var bestItem = enumerator.Current;
-            var bestKey  = keySelector(bestItem);
+            var bestKey = keySelector(bestItem);
             while (enumerator.MoveNext())
             {
                 var key = keySelector(enumerator.Current);
                 if (comparer.Compare(key, bestKey) < 0)
                 {
                     bestItem = enumerator.Current;
-                    bestKey  = key;
+                    bestKey = key;
                 }
             }
             return bestItem;
@@ -136,14 +136,14 @@ namespace UniT.Extensions
             using var enumerator = enumerable.GetEnumerator();
             if (!enumerator.MoveNext()) return defaultValueFactory();
             var bestItem = enumerator.Current;
-            var bestKey  = keySelector(bestItem);
+            var bestKey = keySelector(bestItem);
             while (enumerator.MoveNext())
             {
                 var key = keySelector(enumerator.Current);
                 if (comparer.Compare(key, bestKey) > 0)
                 {
                     bestItem = enumerator.Current;
-                    bestKey  = key;
+                    bestKey = key;
                 }
             }
             return bestItem;
@@ -302,7 +302,7 @@ namespace UniT.Extensions
         public static int LastIndex<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
         {
             var lastIndex = -1;
-            var index     = 0;
+            var index = 0;
             foreach (var item in enumerable)
             {
                 if (predicate(item)) lastIndex = index;
@@ -316,7 +316,7 @@ namespace UniT.Extensions
         public static int LastIndexOrDefault<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
         {
             var lastIndex = -1;
-            var index     = 0;
+            var index = 0;
             foreach (var item in enumerable)
             {
                 if (predicate(item)) lastIndex = index;
@@ -330,7 +330,7 @@ namespace UniT.Extensions
         public static int SingleIndex<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
         {
             var foundIndex = -1;
-            var index      = 0;
+            var index = 0;
             foreach (var item in enumerable)
             {
                 if (predicate(item))
@@ -348,7 +348,7 @@ namespace UniT.Extensions
         public static int SingleIndexOrDefault<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
         {
             var foundIndex = -1;
-            var index      = 0;
+            var index = 0;
             foreach (var item in enumerable)
             {
                 if (predicate(item))
@@ -395,7 +395,7 @@ namespace UniT.Extensions
         {
             comparer ??= EqualityComparer<T>.Default;
             var lastIndex = -1;
-            var index     = 0;
+            var index = 0;
             foreach (var i in enumerable)
             {
                 if (comparer.Equals(i, item)) lastIndex = index;
@@ -410,7 +410,7 @@ namespace UniT.Extensions
         {
             comparer ??= EqualityComparer<T>.Default;
             var lastIndex = -1;
-            var index     = 0;
+            var index = 0;
             foreach (var i in enumerable)
             {
                 if (comparer.Equals(i, item)) lastIndex = index;
@@ -425,7 +425,7 @@ namespace UniT.Extensions
         {
             comparer ??= EqualityComparer<T>.Default;
             var foundIndex = -1;
-            var index      = 0;
+            var index = 0;
             foreach (var i in enumerable)
             {
                 if (comparer.Equals(i, item))
@@ -444,7 +444,7 @@ namespace UniT.Extensions
         {
             comparer ??= EqualityComparer<T>.Default;
             var foundIndex = -1;
-            var index      = 0;
+            var index = 0;
             foreach (var i in enumerable)
             {
                 if (comparer.Equals(i, item))
@@ -508,10 +508,10 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<T> Sample<T>(this IEnumerable<T> enumerable, int count, IEnumerable<int> weights)
         {
-            var collection        = enumerable as ICollection<T> ?? enumerable.ToArray();
+            var collection = enumerable as ICollection<T> ?? enumerable.ToArray();
             var weightsCollection = weights as ICollection<int> ?? weights.ToArray();
-            var sumWeight         = weightsCollection.Sum();
-            var isItemUsed        = new bool[collection.Count];
+            var sumWeight = weightsCollection.Sum();
+            var isItemUsed = new bool[collection.Count];
             while (count-- > 0)
             {
                 if (sumWeight <= 0) break;
@@ -521,8 +521,8 @@ namespace UniT.Extensions
                     if (isItemUsed[index]) continue;
                     if ((randomWeight -= weight) >= 0) continue;
                     yield return item;
-                    sumWeight         -= weight;
-                    isItemUsed[index] =  true;
+                    sumWeight -= weight;
+                    isItemUsed[index] = true;
                     break;
                 }
             }
@@ -531,10 +531,10 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<T> Sample<T>(this IEnumerable<T> enumerable, int count, IEnumerable<float> weights)
         {
-            var collection        = enumerable as ICollection<T> ?? enumerable.ToArray();
+            var collection = enumerable as ICollection<T> ?? enumerable.ToArray();
             var weightsCollection = weights as ICollection<float> ?? weights.ToArray();
-            var sumWeight         = weightsCollection.Sum();
-            var isItemUsed        = new bool[collection.Count];
+            var sumWeight = weightsCollection.Sum();
+            var isItemUsed = new bool[collection.Count];
             while (count-- > 0)
             {
                 if (sumWeight <= 0) break;
@@ -544,8 +544,8 @@ namespace UniT.Extensions
                     if (isItemUsed[index]) continue;
                     if ((randomWeight -= weight) >= 0) continue;
                     yield return item;
-                    sumWeight         -= weight;
-                    isItemUsed[index] =  true;
+                    sumWeight -= weight;
+                    isItemUsed[index] = true;
                     break;
                 }
             }
@@ -583,8 +583,8 @@ namespace UniT.Extensions
         public static T Random<T>(this IEnumerable<T> enumerable, IEnumerable<int> weights)
         {
             var weightsCollection = weights as ICollection<int> ?? weights.ToArray();
-            var sumWeight         = weightsCollection.Sum();
-            var randomWeight      = UnityEngine.Random.Range(0, sumWeight);
+            var sumWeight = weightsCollection.Sum();
+            var randomWeight = UnityEngine.Random.Range(0, sumWeight);
             foreach (var (item, weight) in IterTools.Zip(enumerable, weightsCollection))
             {
                 if ((randomWeight -= weight) >= 0) continue;
@@ -597,8 +597,8 @@ namespace UniT.Extensions
         public static T Random<T>(this IEnumerable<T> enumerable, IEnumerable<float> weights)
         {
             var weightsCollection = weights as ICollection<float> ?? weights.ToArray();
-            var sumWeight         = weightsCollection.Sum();
-            var randomWeight      = UnityEngine.Random.Range(0, sumWeight);
+            var sumWeight = weightsCollection.Sum();
+            var randomWeight = UnityEngine.Random.Range(0, sumWeight);
             foreach (var (item, weight) in IterTools.Zip(enumerable, weightsCollection))
             {
                 if ((randomWeight -= weight) >= 0) continue;

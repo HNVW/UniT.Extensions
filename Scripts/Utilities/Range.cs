@@ -50,7 +50,7 @@ namespace UniT.Extensions
         public RangeEnumerable(int start, int stop)
         {
             this.start = start;
-            this.stop  = stop;
+            this.stop = stop;
         }
 
         public RangeEnumerator GetEnumerator()
@@ -66,11 +66,11 @@ namespace UniT.Extensions
     public struct RangeEnumerator : IEnumerator<int>
     {
         private readonly int stop;
-        private          int current;
+        private int current;
 
         public RangeEnumerator(int start, int stop)
         {
-            this.stop    = stop;
+            this.stop = stop;
             this.current = start - 1;
         }
 
@@ -85,8 +85,8 @@ namespace UniT.Extensions
 
         readonly object IEnumerator.Current => this.current;
 
-        void IEnumerator.Reset() => throw new NotSupportedException();
+        readonly void IEnumerator.Reset() => throw new NotSupportedException();
 
-        void IDisposable.Dispose() { }
+        readonly void IDisposable.Dispose() { }
     }
 }

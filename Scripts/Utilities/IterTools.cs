@@ -12,10 +12,10 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
-            using var e1         = first.GetEnumerator();
-            using var e2         = second.GetEnumerator();
-            var       e1HasValue = e1.MoveNext();
-            var       e2HasValue = e2.MoveNext();
+            using var e1 = first.GetEnumerator();
+            using var e2 = second.GetEnumerator();
+            var e1HasValue = e1.MoveNext();
+            var e2HasValue = e2.MoveNext();
             while (e1HasValue && e2HasValue)
             {
                 yield return resultSelector(e1.Current, e2.Current);
@@ -28,12 +28,12 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<TResult> Zip<TFirst, TSecond, TThird, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third, Func<TFirst, TSecond, TThird, TResult> resultSelector)
         {
-            using var e1         = first.GetEnumerator();
-            using var e2         = second.GetEnumerator();
-            using var e3         = third.GetEnumerator();
-            var       e1HasValue = e1.MoveNext();
-            var       e2HasValue = e2.MoveNext();
-            var       e3HasValue = e3.MoveNext();
+            using var e1 = first.GetEnumerator();
+            using var e2 = second.GetEnumerator();
+            using var e3 = third.GetEnumerator();
+            var e1HasValue = e1.MoveNext();
+            var e2HasValue = e2.MoveNext();
+            var e3HasValue = e3.MoveNext();
             while (e1HasValue && e2HasValue && e3HasValue)
             {
                 yield return resultSelector(e1.Current, e2.Current, e3.Current);
@@ -61,10 +61,10 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
-            using var e1         = first.GetEnumerator();
-            using var e2         = second.GetEnumerator();
-            var       e1HasValue = e1.MoveNext();
-            var       e2HasValue = e2.MoveNext();
+            using var e1 = first.GetEnumerator();
+            using var e2 = second.GetEnumerator();
+            var e1HasValue = e1.MoveNext();
+            var e2HasValue = e2.MoveNext();
             while (e1HasValue && e2HasValue)
             {
                 yield return resultSelector(e1.Current, e2.Current);
@@ -76,12 +76,12 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TThird, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third, Func<TFirst, TSecond, TThird, TResult> resultSelector)
         {
-            using var e1         = first.GetEnumerator();
-            using var e2         = second.GetEnumerator();
-            using var e3         = third.GetEnumerator();
-            var       e1HasValue = e1.MoveNext();
-            var       e2HasValue = e2.MoveNext();
-            var       e3HasValue = e3.MoveNext();
+            using var e1 = first.GetEnumerator();
+            using var e2 = second.GetEnumerator();
+            using var e3 = third.GetEnumerator();
+            var e1HasValue = e1.MoveNext();
+            var e2HasValue = e2.MoveNext();
+            var e3HasValue = e3.MoveNext();
             while (e1HasValue && e2HasValue && e3HasValue)
             {
                 yield return resultSelector(e1.Current, e2.Current, e3.Current);
@@ -108,10 +108,10 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst?, TSecond?, TResult> resultSelector)
         {
-            using var e1         = first.GetEnumerator();
-            using var e2         = second.GetEnumerator();
-            var       e1HasValue = e1.MoveNext();
-            var       e2HasValue = e2.MoveNext();
+            using var e1 = first.GetEnumerator();
+            using var e2 = second.GetEnumerator();
+            var e1HasValue = e1.MoveNext();
+            var e2HasValue = e2.MoveNext();
             while (e1HasValue || e2HasValue)
             {
                 yield return resultSelector(
@@ -126,12 +126,12 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TThird, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third, Func<TFirst?, TSecond?, TThird?, TResult> resultSelector)
         {
-            using var e1         = first.GetEnumerator();
-            using var e2         = second.GetEnumerator();
-            using var e3         = third.GetEnumerator();
-            var       e1HasValue = e1.MoveNext();
-            var       e2HasValue = e2.MoveNext();
-            var       e3HasValue = e3.MoveNext();
+            using var e1 = first.GetEnumerator();
+            using var e2 = second.GetEnumerator();
+            using var e3 = third.GetEnumerator();
+            var e1HasValue = e1.MoveNext();
+            var e2HasValue = e2.MoveNext();
+            var e3HasValue = e3.MoveNext();
             while (e1HasValue || e2HasValue || e3HasValue)
             {
                 yield return resultSelector(
@@ -162,23 +162,33 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<TResult> Product<TFirst, TSecond, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
-            var firstCollection  = first as ICollection<TFirst> ?? first.ToArray();
+            var firstCollection = first as ICollection<TFirst> ?? first.ToArray();
             var secondCollection = second as ICollection<TSecond> ?? second.ToArray();
             foreach (var i1 in firstCollection)
-            foreach (var i2 in secondCollection)
-                yield return resultSelector(i1, i2);
+            {
+                foreach (var i2 in secondCollection)
+                {
+                    yield return resultSelector(i1, i2);
+                }
+            }
         }
 
         [Pure]
         public static IEnumerable<TResult> Product<TFirst, TSecond, TThird, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third, Func<TFirst, TSecond, TThird, TResult> resultSelector)
         {
-            var firstCollection  = first as ICollection<TFirst> ?? first.ToArray();
+            var firstCollection = first as ICollection<TFirst> ?? first.ToArray();
             var secondCollection = second as ICollection<TSecond> ?? second.ToArray();
-            var thirdCollection  = third as ICollection<TThird> ?? third.ToArray();
+            var thirdCollection = third as ICollection<TThird> ?? third.ToArray();
             foreach (var i1 in firstCollection)
-            foreach (var i2 in secondCollection)
-            foreach (var i3 in thirdCollection)
-                yield return resultSelector(i1, i2, i3);
+            {
+                foreach (var i2 in secondCollection)
+                {
+                    foreach (var i3 in thirdCollection)
+                    {
+                        yield return resultSelector(i1, i2, i3);
+                    }
+                }
+            }
         }
 
         [Pure]
@@ -205,9 +215,9 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<IReadOnlyList<T>> Permutations<T>(IEnumerable<T> enumerable, int count, bool useSharedBuffer = false)
         {
-            var items  = enumerable as IList<T> ?? enumerable.ToArray();
+            var items = enumerable as IList<T> ?? enumerable.ToArray();
             var buffer = new List<T>(count);
-            var used   = new bool[items.Count];
+            var used = new bool[items.Count];
             return PermutationsRecursive(items, count, buffer, used, useSharedBuffer);
 
             static IEnumerable<IReadOnlyList<T>> PermutationsRecursive(IList<T> items, int count, List<T> buffer, bool[] used, bool useSharedBuffer)
@@ -246,7 +256,7 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<IReadOnlyList<T>> Combinations<T>(IEnumerable<T> enumerable, int count, bool useSharedBuffer = false)
         {
-            var items  = enumerable as IList<T> ?? enumerable.ToArray();
+            var items = enumerable as IList<T> ?? enumerable.ToArray();
             var buffer = new List<T>(count);
             return CombinationsRecursive(items, count, 0, buffer, useSharedBuffer);
 
@@ -275,7 +285,7 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<IReadOnlyList<T>> CombinationsWithReplacement<T>(IEnumerable<T> enumerable, int count, bool useSharedBuffer = false)
         {
-            var items  = enumerable as IList<T> ?? enumerable.ToArray();
+            var items = enumerable as IList<T> ?? enumerable.ToArray();
             var buffer = new List<T>(count);
             return CombinationsWithReplacementRecursive(items, count, 0, buffer, useSharedBuffer);
 

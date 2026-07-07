@@ -62,7 +62,7 @@ namespace VContainer
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static object Instantiate(this IObjectResolver container, Type type, params object?[] @params)
         {
-            return container.Instantiate(type, (IReadOnlyList<IInjectParameter>)@params.Select(param => new Parameter(param)).ToArray());
+            return container.Instantiate(type, (IReadOnlyList<IInjectParameter>)@params.Select(static param => new Parameter(param)).ToArray());
         }
 
         [Pure]

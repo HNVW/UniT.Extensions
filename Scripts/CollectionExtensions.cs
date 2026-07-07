@@ -395,7 +395,7 @@ namespace UniT.Extensions
             {
                 var dimension1 = source.Length;
                 var dimension2 = source[0].Length;
-                var result     = new T[dimension1, dimension2];
+                var result = new T[dimension1, dimension2];
                 for (var i = 0; i < dimension1; ++i)
                 {
                     for (var j = 0; j < dimension2; ++j)
@@ -416,7 +416,7 @@ namespace UniT.Extensions
         {
             var dimension1 = source.GetLength(0);
             var dimension2 = source.GetLength(1);
-            var result     = new T[dimension1][];
+            var result = new T[dimension1][];
             for (var i = 0; i < dimension1; ++i)
             {
                 result[i] = new T[dimension2];

@@ -552,7 +552,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<IGrouping<TKey, KeyValuePair<TKey, TValue>>> GroupByKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
         {
-            return dictionary.GroupBy(kv => kv.Key);
+            return dictionary.GroupBy(static kv => kv.Key);
         }
 
         [Pure]
@@ -566,7 +566,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<IGrouping<TValue, KeyValuePair<TKey, TValue>>> GroupByValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
         {
-            return dictionary.GroupBy(kv => kv.Value);
+            return dictionary.GroupBy(static kv => kv.Value);
         }
 
         [Pure]
@@ -587,7 +587,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null)
         {
-            return dictionary.OrderBy(kv => kv.Key, comparer);
+            return dictionary.OrderBy(static kv => kv.Key, comparer);
         }
 
         [Pure]
@@ -601,7 +601,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null)
         {
-            return dictionary.OrderBy(kv => kv.Value, comparer);
+            return dictionary.OrderBy(static kv => kv.Value, comparer);
         }
 
         [Pure]
@@ -622,7 +622,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByDescendingKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null)
         {
-            return dictionary.OrderByDescending(kv => kv.Key, comparer);
+            return dictionary.OrderByDescending(static kv => kv.Key, comparer);
         }
 
         [Pure]
@@ -636,7 +636,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByDescendingValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null)
         {
-            return dictionary.OrderByDescending(kv => kv.Value, comparer);
+            return dictionary.OrderByDescending(static kv => kv.Value, comparer);
         }
 
         [Pure]
@@ -657,7 +657,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByKey<TKey, TValue>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null)
         {
-            return dictionary.ThenBy(kv => kv.Key, comparer);
+            return dictionary.ThenBy(static kv => kv.Key, comparer);
         }
 
         [Pure]
@@ -671,7 +671,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByValue<TKey, TValue>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null)
         {
-            return dictionary.ThenBy(kv => kv.Value, comparer);
+            return dictionary.ThenBy(static kv => kv.Value, comparer);
         }
 
         [Pure]
@@ -692,7 +692,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByDescendingKey<TKey, TValue>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null)
         {
-            return dictionary.ThenByDescending(kv => kv.Key, comparer);
+            return dictionary.ThenByDescending(static kv => kv.Key, comparer);
         }
 
         [Pure]
@@ -706,7 +706,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByDescendingValue<TKey, TValue>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null)
         {
-            return dictionary.ThenByDescending(kv => kv.Value, comparer);
+            return dictionary.ThenByDescending(static kv => kv.Value, comparer);
         }
 
         [Pure]
@@ -720,7 +720,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary) where TKey : notnull
         {
-            return dictionary.ToDictionary(kv => kv.Key, kv => kv.Value);
+            return dictionary.ToDictionary(static kv => kv.Key, static kv => kv.Value);
         }
 
         [Pure]

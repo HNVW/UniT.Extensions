@@ -13,7 +13,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGrouping<TKey, TItem> MinByKey<TKey, TItem>(this IEnumerable<IGrouping<TKey, TItem>> dictionary, IComparer<TKey>? comparer = null)
         {
-            return dictionary.MinBy(kv => kv.Key, comparer);
+            return dictionary.MinBy(static kv => kv.Key, comparer);
         }
 
         [Pure]
@@ -27,7 +27,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGrouping<TKey, TItem> MaxByKey<TKey, TItem>(this IEnumerable<IGrouping<TKey, TItem>> dictionary, IComparer<TKey>? comparer = null)
         {
-            return dictionary.MaxBy(kv => kv.Key, comparer);
+            return dictionary.MaxBy(static kv => kv.Key, comparer);
         }
 
         [Pure]
@@ -41,7 +41,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<IGrouping<TKey, TItem>> OrderByKey<TItem, TKey>(this IEnumerable<IGrouping<TKey, TItem>> enumerable, IComparer<TKey>? comparer = null)
         {
-            return enumerable.OrderBy(group => group.Key, comparer);
+            return enumerable.OrderBy(static group => group.Key, comparer);
         }
 
         [Pure]
@@ -55,7 +55,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<IGrouping<TKey, TItem>> OrderByDescendingKey<TItem, TKey>(this IEnumerable<IGrouping<TKey, TItem>> enumerable, IComparer<TKey>? comparer = null)
         {
-            return enumerable.OrderByDescending(group => group.Key, comparer);
+            return enumerable.OrderByDescending(static group => group.Key, comparer);
         }
 
         [Pure]
@@ -69,7 +69,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<IGrouping<TKey, TItem>> ThenByKey<TItem, TKey>(this IOrderedEnumerable<IGrouping<TKey, TItem>> enumerable, IComparer<TKey>? comparer = null)
         {
-            return enumerable.ThenBy(group => group.Key, comparer);
+            return enumerable.ThenBy(static group => group.Key, comparer);
         }
 
         [Pure]
@@ -83,7 +83,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IOrderedEnumerable<IGrouping<TKey, TItem>> ThenByDescendingKey<TItem, TKey>(this IOrderedEnumerable<IGrouping<TKey, TItem>> enumerable, IComparer<TKey>? comparer = null)
         {
-            return enumerable.ThenByDescending(group => group.Key, comparer);
+            return enumerable.ThenByDescending(static group => group.Key, comparer);
         }
 
         [Pure]

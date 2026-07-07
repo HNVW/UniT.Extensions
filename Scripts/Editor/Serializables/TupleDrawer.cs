@@ -13,11 +13,11 @@ namespace UniT.Extensions.Editor
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent? label)
         {
-            var tuple        = (ITuple)property.boxedValue;
+            var tuple = (ITuple)property.boxedValue;
             var displayNames = this.attribute as TupleDisplayNamesAttribute;
 
             var originalLabelWidth = EditorGUIUtility.labelWidth;
-            var fullWidth          = position.width;
+            var fullWidth = position.width;
             GUILayout.BeginHorizontal();
 
             position.width = label is not null && !label.text.IsNullOrWhiteSpace() ? EditorGUIUtility.labelWidth : 0;

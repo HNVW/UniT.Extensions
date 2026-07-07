@@ -37,7 +37,7 @@ namespace UniT.Extensions
                 return new Progress(value =>
                 {
                     totalProgress += value - subProgress;
-                    subProgress   =  value;
+                    subProgress = value;
                     progress.Report(totalProgress / count);
                 });
             }

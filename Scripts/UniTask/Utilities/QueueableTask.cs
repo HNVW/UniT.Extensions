@@ -12,7 +12,7 @@ namespace UniT.Extensions
         private readonly Queue<object> queue = new();
 
         private CancellationTokenSource? cts;
-        private bool                     isRunning;
+        private bool isRunning;
 
         public async UniTask RunAsync<TState>(Func<TState, CancellationToken, UniTask> taskFactory, TState state) where TState : notnull
         {
@@ -41,7 +41,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UniTask RunAsync(Func<CancellationToken, UniTask> taskFactory)
         {
-            return this.RunAsync((taskFactory, ct) => taskFactory(ct), taskFactory);
+            return this.RunAsync(static (taskFactory, ct) => taskFactory(ct), taskFactory);
         }
 
         public void Cancel()

@@ -9,19 +9,19 @@ namespace UniT.Extensions
 
     public sealed class RetryableTask
     {
-        private readonly int   retryCount;
+        private readonly int retryCount;
         private readonly float retryIntervalSeconds;
         private readonly float retryIntervalMultiplier;
         private readonly float retryIntervalMax;
-        private readonly bool  ignoreTimeScale;
+        private readonly bool ignoreTimeScale;
 
         public RetryableTask(int retryCount = -1, float retryIntervalSeconds = 1, float retryIntervalMultiplier = 2, float retryIntervalMax = 32, bool ignoreTimeScale = false)
         {
-            this.retryCount              = retryCount;
-            this.retryIntervalSeconds    = retryIntervalSeconds;
+            this.retryCount = retryCount;
+            this.retryIntervalSeconds = retryIntervalSeconds;
             this.retryIntervalMultiplier = retryIntervalMultiplier;
-            this.retryIntervalMax        = retryIntervalMax;
-            this.ignoreTimeScale         = ignoreTimeScale;
+            this.retryIntervalMax = retryIntervalMax;
+            this.ignoreTimeScale = ignoreTimeScale;
         }
 
         private CancellationTokenSource? cts;
@@ -54,13 +54,13 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UniTask RunAsync(Func<CancellationToken, UniTask<bool>> taskFactory)
         {
-            return this.RunAsync((taskFactory, ct) => taskFactory(ct), taskFactory);
+            return this.RunAsync(static (taskFactory, ct) => taskFactory(ct), taskFactory);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UniTask RunAsync<TState>(Func<TState, CancellationToken, UniTask> taskFactory, TState state) where TState : notnull
         {
-            return this.RunAsync(async (state, ct) =>
+            return this.RunAsync(static async (state, ct) =>
             {
                 await state.taskFactory(state.state, ct);
                 return true;
@@ -70,7 +70,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public UniTask RunAsync(Func<CancellationToken, UniTask> taskFactory)
         {
-            return this.RunAsync((taskFactory, ct) => taskFactory(ct), taskFactory);
+            return this.RunAsync(static (taskFactory, ct) => taskFactory(ct), taskFactory);
         }
 
         public void Cancel()

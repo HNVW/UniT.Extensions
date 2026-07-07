@@ -29,7 +29,7 @@ namespace UniT.Extensions
 
         public IEnumerable<TItem> GetColumn(int x) => this.columns[x].Cells;
 
-        public IEnumerable<TItem> GetRow(int y) => this.columns.Select((column, y) => column.Cells[y], y);
+        public IEnumerable<TItem> GetRow(int y) => this.columns.Select(static (column, y) => column.Cells[y], y);
 
         public IEnumerator<TItem> GetEnumerator()
         {

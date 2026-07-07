@@ -35,10 +35,10 @@ namespace UniT.Extensions
         public static void Fit(this Camera camera, Vector3 center, float size, Vector3 offsetBySize = default, Vector3 offset = default, float paddingBySize = 0, float padding = 0)
         {
             center = center + size * offsetBySize + offset;
-            size   = size * (1 + paddingBySize) + padding;
+            size = size * (1 + paddingBySize) + padding;
             if (camera.orthographic)
             {
-                camera.orthographicSize   = size;
+                camera.orthographicSize = size;
                 camera.transform.position = center - camera.transform.forward * 10f;
             }
             else

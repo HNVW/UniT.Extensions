@@ -15,8 +15,8 @@ namespace UniT.Extensions
         {
             return type.GetConstructors() switch
             {
-                { Length: 0 }    => throw new InvalidOperationException($"No constructor found for {type.Name}"),
-                { Length: > 1 }  => throw new InvalidOperationException($"Multiple constructors found for {type.Name}"),
+                { Length: 0 } => throw new InvalidOperationException($"No constructor found for {type.Name}"),
+                { Length: > 1 } => throw new InvalidOperationException($"Multiple constructors found for {type.Name}"),
                 var constructors => constructors[0],
             };
         }
@@ -26,9 +26,9 @@ namespace UniT.Extensions
         {
             return type.GetDerivedTypes().ToArray() switch
             {
-                { Length: 0 }   => throw new InvalidOperationException($"No derived type found for {type.Name}"),
+                { Length: 0 } => throw new InvalidOperationException($"No derived type found for {type.Name}"),
                 { Length: > 1 } => throw new InvalidOperationException($"Multiple derived types found for {type.Name}"),
-                var types       => types[0],
+                var types => types[0],
             };
         }
 
@@ -57,14 +57,14 @@ namespace UniT.Extensions
         public static IEnumerable<Type> GetDerivedTypes(this Type baseType)
         {
             return AppDomain.CurrentDomain.GetAssemblies()
-                .Where(asm => !asm.IsDynamic)
+                .Where(static asm => !asm.IsDynamic)
                 .SelectMany(baseType.GetDerivedTypes);
         }
 
         [Pure]
         public static IEnumerable<Type> GetDerivedTypes(this Type baseType, Assembly assembly)
         {
-            return assembly.GetTypes().Where((type, baseType) => !type.IsAbstract && baseType.IsAssignableFrom(type), baseType);
+            return assembly.GetTypes().Where(static (type, baseType) => !type.IsAbstract && baseType.IsAssignableFrom(type), baseType);
         }
 
         [Pure]
@@ -104,7 +104,7 @@ namespace UniT.Extensions
         [Pure]
         public static string ToPropertyName(this string str)
         {
-            return str.IsBackingFieldName() ? str.Substring(1, str.Length - 17) : str;
+            return str.IsBackingFieldName() ? str[1..^16] : str;
         }
 
         [Pure]

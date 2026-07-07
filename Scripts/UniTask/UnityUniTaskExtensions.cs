@@ -48,7 +48,7 @@ namespace Cysharp.Threading.Tasks
             {
                 if (!this.isActiveAndEnabled) return UniTask.CompletedTask;
                 var tcs = new UniTaskCompletionSource();
-                this.CancellationToken.RegisterWithoutCaptureExecutionContext(tcs => ((UniTaskCompletionSource)tcs).TrySetResult(), tcs);
+                this.CancellationToken.RegisterWithoutCaptureExecutionContext(static tcs => ((UniTaskCompletionSource)tcs).TrySetResult(), tcs);
                 return tcs.Task;
             }
 
