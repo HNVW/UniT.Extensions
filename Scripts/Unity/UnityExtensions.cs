@@ -218,6 +218,12 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T AddComponent<T>(this Component component) where T : Component
+        {
+            return component.gameObject.AddComponent<T>();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryAddComponent<T>(this GameObject gameObject) where T : Component
         {
             if (gameObject.HasComponent<T>()) return false;
@@ -228,7 +234,9 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryAddComponent<T>(this Component component) where T : Component
         {
-            return component.gameObject.TryAddComponent<T>();
+            if (component.HasComponent<T>()) return false;
+            component.AddComponent<T>();
+            return true;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -240,7 +248,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T GetComponentOrAdd<T>(this Component component) where T : Component
         {
-            return component.gameObject.GetComponentOrAdd<T>();
+            return component.TryGetComponent(out T result) ? result : component.AddComponent<T>();
         }
 
         [Pure]

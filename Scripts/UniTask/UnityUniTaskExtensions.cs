@@ -18,7 +18,7 @@ namespace Cysharp.Threading.Tasks
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static UniTask OnDisableAsync(this Component component)
         {
-            return component.gameObject.OnDisableAsync();
+            return component.GetComponentOrAdd<AsyncDisableTrigger>().OnDisableAsync();
         }
 
         [Pure]
@@ -32,7 +32,7 @@ namespace Cysharp.Threading.Tasks
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static CancellationToken GetCancellationTokenOnDisable(this Component component)
         {
-            return component.gameObject.GetCancellationTokenOnDisable();
+            return component.GetComponentOrAdd<AsyncDisableTrigger>().CancellationToken;
         }
 
         [DisallowMultipleComponent]
