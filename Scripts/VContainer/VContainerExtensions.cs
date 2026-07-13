@@ -1,13 +1,13 @@
 #nullable enable
-namespace VContainer
+namespace UniT.Extensions
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Runtime.CompilerServices;
-    using UniT.Extensions;
     using UnityEngine;
+    using VContainer;
     using VContainer.Internal;
     using VContainer.Unity;
     using Object = UnityEngine.Object;

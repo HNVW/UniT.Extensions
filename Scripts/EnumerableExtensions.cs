@@ -29,7 +29,6 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T AggregateFromFirstOrDefault<T>(this IEnumerable<T> enumerable, Func<T, T, T> func, T defaultValue) => enumerable.AggregateFromFirstOrDefault(func, () => defaultValue);
 
-        // ReSharper disable once ReturnTypeCanBeNotNullable
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T? AggregateFromFirstOrDefault<T>(this IEnumerable<T> enumerable, Func<T, T, T> func) => enumerable.AggregateFromFirstOrDefault(func, static () => default!);
@@ -54,7 +53,6 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T MinOrDefault<T>(this IEnumerable<T> enumerable, T defaultValue, IComparer<T>? comparer = null) => enumerable.MinOrDefault(() => defaultValue, comparer);
 
-        // ReSharper disable once ReturnTypeCanBeNotNullable
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T? MinOrDefault<T>(this IEnumerable<T> enumerable, IComparer<T>? comparer = null) => enumerable.MinOrDefault(static () => default!, comparer);
@@ -79,7 +77,6 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T MaxOrDefault<T>(this IEnumerable<T> enumerable, T defaultValue, IComparer<T>? comparer = null) => enumerable.MaxOrDefault(() => defaultValue, comparer);
 
-        // ReSharper disable once ReturnTypeCanBeNotNullable
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T? MaxOrDefault<T>(this IEnumerable<T> enumerable, IComparer<T>? comparer = null) => enumerable.MaxOrDefault(static () => default!, comparer);
@@ -116,7 +113,6 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T MinByOrDefault<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector, T defaultValue, IComparer<TKey>? comparer = null) => enumerable.MinByOrDefault(keySelector, () => defaultValue, comparer);
 
-        // ReSharper disable once ReturnTypeCanBeNotNullable
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T? MinByOrDefault<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector, IComparer<TKey>? comparer = null) => enumerable.MinByOrDefault(keySelector, static () => default!, comparer);
@@ -153,7 +149,6 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T MaxByOrDefault<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector, T defaultValue, IComparer<TKey>? comparer = null) => enumerable.MaxByOrDefault(keySelector, () => defaultValue, comparer);
 
-        // ReSharper disable once ReturnTypeCanBeNotNullable
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T? MaxByOrDefault<T, TKey>(this IEnumerable<T> enumerable, Func<T, TKey> keySelector, IComparer<TKey>? comparer = null) => enumerable.MaxByOrDefault(keySelector, static () => default!, comparer);
@@ -568,7 +563,6 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T RandomOrDefault<T>(this IEnumerable<T> enumerable, T defaultValue) => enumerable.RandomOrDefault(() => defaultValue);
 
-        // ReSharper disable once ReturnTypeCanBeNotNullable
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T? RandomOrDefault<T>(this IEnumerable<T> enumerable) => enumerable.RandomOrDefault(static () => default!);

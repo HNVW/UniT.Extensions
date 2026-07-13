@@ -34,12 +34,17 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void RemoveAtSwapBack<T>(this IList<T> list, int index)
+        {
+            var lastIndex = list.Count - 1;
+            list[index] = list[lastIndex];
+            list.RemoveAt(lastIndex);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void RemoveAtSwapBack<T>(this IList<T> list, Index index)
         {
-            var realIndex = list.GetRealIndex(index);
-            var lastIndex = list.Count - 1;
-            list[realIndex] = list[lastIndex];
-            list.RemoveAt(lastIndex);
+            list.RemoveAtSwapBack(list.GetRealIndex(index));
         }
 
         [Pure]

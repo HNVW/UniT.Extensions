@@ -1,10 +1,10 @@
 #nullable enable
-namespace Cysharp.Threading.Tasks
+namespace UniT.Extensions
 {
     using System.Diagnostics.Contracts;
     using System.Runtime.CompilerServices;
     using System.Threading;
-    using UniT.Extensions;
+    using Cysharp.Threading.Tasks;
     using UnityEngine;
 
     public static class UnityUniTaskExtensions

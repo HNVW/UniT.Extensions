@@ -27,7 +27,6 @@ namespace UniT.Extensions
             return Object.Instantiate(prefab, parent, instantiateInWorldSpace);
         }
 
-        // ReSharper disable once MethodOverloadWithOptionalParameter
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Instantiate<T>(this T prefab, Vector3? position = null, Quaternion? rotation = null, Transform? parent = null) where T : Component
         {
