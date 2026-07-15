@@ -11,6 +11,7 @@ namespace UniT.Extensions
     public static class ReflectionExtensions
     {
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ConstructorInfo GetSingleConstructor(this Type type)
         {
             return type.GetConstructors() switch
@@ -22,6 +23,7 @@ namespace UniT.Extensions
         }
 
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Type GetSingleDerivedType(this Type type)
         {
             return type.GetDerivedTypes().ToArray() switch
@@ -54,6 +56,7 @@ namespace UniT.Extensions
         }
 
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<Type> GetDerivedTypes(this Type baseType)
         {
             return AppDomain.CurrentDomain.GetAssemblies()
@@ -62,6 +65,7 @@ namespace UniT.Extensions
         }
 
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<Type> GetDerivedTypes(this Type baseType, Assembly assembly)
         {
             return assembly.GetTypes().Where(static (type, baseType) => !type.IsAbstract && baseType.IsAssignableFrom(type), baseType);
@@ -84,36 +88,42 @@ namespace UniT.Extensions
         }
 
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsBackingField(this FieldInfo field)
         {
             return field.Name.IsBackingFieldName();
         }
 
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsBackingFieldName(this string str)
         {
             return str.StartsWith("<") && str.EndsWith(">k__BackingField");
         }
 
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToBackingFieldName(this string str)
         {
             return str.IsBackingFieldName() ? str : string.Concat("<", str, ">k__BackingField");
         }
 
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ToPropertyName(this string str)
         {
             return str.IsBackingFieldName() ? str[1..^16] : str;
         }
 
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static FieldInfo? ToBackingFieldInfo(this PropertyInfo property)
         {
             return property.DeclaringType?.GetField(property.Name.ToBackingFieldName());
         }
 
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static PropertyInfo? ToPropertyInfo(this FieldInfo backingField)
         {
             return backingField.DeclaringType?.GetProperty(backingField.Name.ToPropertyName());

@@ -9,6 +9,7 @@ namespace UniT.Extensions
     public static class DateTimeExtensions
     {
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DateTime GetFirstDayOfWeek(this DateTime dateTime, DayOfWeek firstDayOfWeek)
         {
             var diff = dateTime.DayOfWeek - firstDayOfWeek;
