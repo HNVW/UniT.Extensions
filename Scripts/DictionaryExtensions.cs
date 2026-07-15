@@ -123,22 +123,25 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TValue> valueFactory) where TKey : notnull
         {
-            dictionary.TryAdd(key, valueFactory);
-            return dictionary[key];
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory) where TKey : notnull
-        {
-            dictionary.TryAdd(key, valueFactory);
-            return dictionary[key];
+            if (dictionary.TryGetValue(key, out var value)) return value;
+            value = valueFactory();
+            dictionary.Add(key, value);
+            return value;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TValue GetOrAdd<TKey, TValue, TState>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TState, TValue> valueFactory, TState state) where TKey : notnull where TState : notnull
         {
-            dictionary.TryAdd(key, valueFactory, state);
-            return dictionary[key];
+            if (dictionary.TryGetValue(key, out var value)) return value;
+            value = valueFactory(state);
+            dictionary.Add(key, value);
+            return value;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory) where TKey : notnull
+        {
+            return dictionary.GetOrAdd(key, valueFactory, key);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -151,21 +154,22 @@ namespace UniT.Extensions
         public static bool TryAdd<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TValue> valueFactory) where TKey : notnull
         {
             if (dictionary.ContainsKey(key)) return false;
-            return dictionary.TryAdd(key, valueFactory());
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool TryAdd<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory) where TKey : notnull
-        {
-            if (dictionary.ContainsKey(key)) return false;
-            return dictionary.TryAdd(key, valueFactory(key));
+            dictionary.Add(key, valueFactory());
+            return true;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryAdd<TKey, TValue, TState>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TState, TValue> valueFactory, TState state) where TKey : notnull where TState : notnull
         {
             if (dictionary.ContainsKey(key)) return false;
-            return dictionary.TryAdd(key, valueFactory(state));
+            dictionary.Add(key, valueFactory(state));
+            return true;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool TryAdd<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory) where TKey : notnull
+        {
+            return dictionary.TryAdd(key, valueFactory, key);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

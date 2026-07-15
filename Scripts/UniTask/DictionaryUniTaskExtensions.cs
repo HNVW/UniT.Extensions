@@ -46,25 +46,46 @@ namespace UniT.Extensions
             return dictionary.Remove(key, out var value) ? UniTask.FromResult(value) : valueFactory(state);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static async UniTask<TValue> GetOrAddAsync<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<UniTask<TValue>> valueFactory) where TKey : notnull
         {
-            await dictionary.TryAddAsync(key, valueFactory);
-            return dictionary[key];
+            var @lock = (object)(dictionary, key);
+            if (Locks.Contains(@lock)) await UniTask.WaitUntil(@lock, static @lock => !Locks.Contains(@lock));
+            if (dictionary.TryGetValue(key, out var value)) return value;
+            Locks.Add(@lock);
+            try
+            {
+                value = await valueFactory();
+                dictionary.Add(key, value);
+                return value;
+            }
+            finally
+            {
+                Locks.Remove(@lock);
+            }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask<TValue> GetOrAddAsync<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, UniTask<TValue>> valueFactory) where TKey : notnull
-        {
-            await dictionary.TryAddAsync(key, valueFactory);
-            return dictionary[key];
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static async UniTask<TValue> GetOrAddAsync<TKey, TValue, TState>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TState, UniTask<TValue>> valueFactory, TState state) where TKey : notnull where TState : notnull
         {
-            await dictionary.TryAddAsync(key, valueFactory, state);
-            return dictionary[key];
+            var @lock = (object)(dictionary, key);
+            if (Locks.Contains(@lock)) await UniTask.WaitUntil(@lock, static @lock => !Locks.Contains(@lock));
+            if (dictionary.TryGetValue(key, out var value)) return value;
+            Locks.Add(@lock);
+            try
+            {
+                value = await valueFactory(state);
+                dictionary.Add(key, value);
+                return value;
+            }
+            finally
+            {
+                Locks.Remove(@lock);
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask<TValue> GetOrAddAsync<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, UniTask<TValue>> valueFactory) where TKey : notnull
+        {
+            return dictionary.GetOrAddAsync(key, valueFactory, key);
         }
 
         public static async UniTask<bool> TryAddAsync<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<UniTask<TValue>> valueFactory) where TKey : notnull
@@ -75,23 +96,8 @@ namespace UniT.Extensions
             Locks.Add(@lock);
             try
             {
-                return dictionary.TryAdd(key, await valueFactory());
-            }
-            finally
-            {
-                Locks.Remove(@lock);
-            }
-        }
-
-        public static async UniTask<bool> TryAddAsync<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, UniTask<TValue>> valueFactory) where TKey : notnull
-        {
-            var @lock = (object)(dictionary, key);
-            if (Locks.Contains(@lock)) await UniTask.WaitUntil(@lock, static @lock => !Locks.Contains(@lock));
-            if (dictionary.ContainsKey(key)) return false;
-            Locks.Add(@lock);
-            try
-            {
-                return dictionary.TryAdd(key, await valueFactory(key));
+                dictionary.Add(key, await valueFactory());
+                return true;
             }
             finally
             {
@@ -107,12 +113,19 @@ namespace UniT.Extensions
             Locks.Add(@lock);
             try
             {
-                return dictionary.TryAdd(key, await valueFactory(state));
+                dictionary.Add(key, await valueFactory(state));
+                return true;
             }
             finally
             {
                 Locks.Remove(@lock);
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask<bool> TryAddAsync<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, UniTask<TValue>> valueFactory) where TKey : notnull
+        {
+            return dictionary.TryAddAsync(key, valueFactory, key);
         }
     }
 }
