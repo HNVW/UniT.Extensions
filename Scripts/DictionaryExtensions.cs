@@ -151,24 +151,21 @@ namespace UniT.Extensions
         public static bool TryAdd<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TValue> valueFactory) where TKey : notnull
         {
             if (dictionary.ContainsKey(key)) return false;
-            dictionary.Add(key, valueFactory());
-            return true;
+            return dictionary.TryAdd(key, valueFactory());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryAdd<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory) where TKey : notnull
         {
             if (dictionary.ContainsKey(key)) return false;
-            dictionary.Add(key, valueFactory(key));
-            return true;
+            return dictionary.TryAdd(key, valueFactory(key));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryAdd<TKey, TValue, TState>(this IDictionary<TKey, TValue> dictionary, TKey key, Func<TState, TValue> valueFactory, TState state) where TKey : notnull where TState : notnull
         {
             if (dictionary.ContainsKey(key)) return false;
-            dictionary.Add(key, valueFactory(state));
-            return true;
+            return dictionary.TryAdd(key, valueFactory(state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
