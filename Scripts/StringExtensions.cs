@@ -141,5 +141,12 @@ namespace UniT.Extensions
         {
             return string.Concat("<size=", pixel > 0 ? "+" : "-", Mathf.Abs(pixel), ">", str, "</size>");
         }
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string Truncate(this string str, int maxLength, string truncationIndicator = "...")
+        {
+            return str.Length <= maxLength ? str : string.Concat(str[..(maxLength - truncationIndicator.Length)], truncationIndicator);
+        }
     }
 }
