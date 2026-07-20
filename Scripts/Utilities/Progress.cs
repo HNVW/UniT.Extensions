@@ -17,7 +17,7 @@ namespace UniT.Extensions
 
         void IProgress<float>.Report(float value)
         {
-            if (value is < 0 or > 1) throw new ArgumentOutOfRangeException(nameof(value), value, "Value must be between 0 and 1");
+            if (value is < 0 or > 1 or float.NaN) throw new ArgumentOutOfRangeException(nameof(value), value, "Value must be between 0 and 1");
             if (value < this.lastValue) throw new ArgumentOutOfRangeException(nameof(value), value, "Value must be greater than the last value");
             this.onUpdate(this.lastValue = value);
         }

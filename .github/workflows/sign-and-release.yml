@@ -10,5 +10,5 @@ permissions:
 
 jobs:
   sign:
-    uses: HNVW/UniT.CI/.github/workflows/ci.yml@master
+    uses: HNVW/UniT.Workflows/.github/workflows/sign-and-release.yml@master
     secrets: inherit
