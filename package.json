@@ -2,7 +2,7 @@
   "name": "com.frostbun.unit.extensions",
   "displayName": "UniT Extensions",
   "description": "Common extension methods for Unity",
-  "version": "5.0.2",
+  "version": "5.1.0",
   "unity": "6000.3",
   "license": "MIT",
   "author": {
