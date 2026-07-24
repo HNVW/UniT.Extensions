@@ -7,13 +7,12 @@ namespace UniT.Extensions
     public static class Physics2DExtensions
     {
         [Pure]
-        public static T? Raycast2D<T>(this Camera camera, Vector3 screenPosition, float maxDistance = Mathf.Infinity, LayerMask? layerMask = null) where T : notnull
+        public static T? Overlap2D<T>(this Camera camera, Vector3 screenPosition, LayerMask? layerMask = null) where T : notnull
         {
-            var hit = Physics2D.Raycast(camera.ScreenToWorldPoint(screenPosition), camera.transform.forward, maxDistance, layerMask ?? Physics2D.DefaultRaycastLayers);
-            if (!hit) return default;
-            if (hit.rigidbody) return hit.rigidbody.GetComponentOrDefault<T>();
-            if (hit.collider) return hit.collider.GetComponentInParentOrDefault<T>();
-            return default;
+            var collider = Physics2D.OverlapPoint(camera.ScreenToWorldPoint(screenPosition.WithZ(Mathf.Abs(camera.transform.position.z))), layerMask ?? Physics2D.DefaultRaycastLayers);
+            if (!collider) return default;
+            if (collider.attachedRigidbody) return collider.attachedRigidbody.GetComponentOrDefault<T>();
+            return collider.GetComponentInParentOrDefault<T>();
         }
     }
 }

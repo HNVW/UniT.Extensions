@@ -250,14 +250,14 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectFirsts<TFirst, TSecond, TResult, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TState, TResult> selector, TState state)
+        public static IEnumerable<TResult> SelectFirsts<TFirst, TSecond, TResult, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TState, TResult> selector, TState state) where TState : notnull
         {
             return tuples.Select(static (tuple, state) => state.selector(tuple.Item1, state.state), (selector, state));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectFirsts<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TState, TResult> selector, TState state)
+        public static IEnumerable<TResult> SelectFirsts<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TState, TResult> selector, TState state) where TState : notnull
         {
             return tuples.Select(static (tuple, state) => state.selector(tuple.Item1, state.state), (selector, state));
         }
@@ -292,14 +292,14 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectSeconds<TFirst, TSecond, TResult, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TSecond, TState, TResult> selector, TState state)
+        public static IEnumerable<TResult> SelectSeconds<TFirst, TSecond, TResult, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TSecond, TState, TResult> selector, TState state) where TState : notnull
         {
             return tuples.Select(static (tuple, state) => state.selector(tuple.Item2, state.state), (selector, state));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectSeconds<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TSecond, TState, TResult> selector, TState state)
+        public static IEnumerable<TResult> SelectSeconds<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TSecond, TState, TResult> selector, TState state) where TState : notnull
         {
             return tuples.Select(static (tuple, state) => state.selector(tuple.Item2, state.state), (selector, state));
         }
@@ -320,7 +320,7 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectThirds<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TThird, TState, TResult> selector, TState state)
+        public static IEnumerable<TResult> SelectThirds<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TThird, TState, TResult> selector, TState state) where TState : notnull
         {
             return tuples.Select(static (tuple, state) => state.selector(tuple.Item3, state.state), (selector, state));
         }
@@ -580,113 +580,49 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ForEach<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Action<TFirst, TSecond> action)
         {
-            foreach (var tuple in tuples) action(tuple.Item1, tuple.Item2);
+            tuples.ForEach(static (tuple, action) => action(tuple.Item1, tuple.Item2), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ForEach<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Action<TFirst, TSecond, TState> action, TState state) where TState : notnull
         {
-            foreach (var tuple in tuples) action(tuple.Item1, tuple.Item2, state);
+            tuples.ForEach(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ForEach<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Action<TFirst, TSecond, TThird> action)
         {
-            foreach (var tuple in tuples) action(tuple.Item1, tuple.Item2, tuple.Item3);
+            tuples.ForEach(static (tuple, action) => action(tuple.Item1, tuple.Item2, tuple.Item3), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ForEach<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Action<TFirst, TSecond, TThird, TState> action, TState state) where TState : notnull
         {
-            foreach (var tuple in tuples) action(tuple.Item1, tuple.Item2, tuple.Item3, state);
+            tuples.ForEach(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SafeForEach<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Action<TFirst, TSecond> action)
         {
-            if (tuples is ICollection<(TFirst, TSecond)> collection)
-            {
-                var array = ArrayPool<(TFirst, TSecond)>.Shared.Rent(collection.Count);
-                try
-                {
-                    collection.CopyTo(array, 0);
-                    foreach (var tuple in array.AsSpan(0, collection.Count)) action(tuple.Item1, tuple.Item2);
-                }
-                finally
-                {
-                    ArrayPool<(TFirst, TSecond)>.Shared.Return(array, RuntimeHelpers.IsReferenceOrContainsReferences<(TFirst, TSecond)>());
-                }
-            }
-            else
-            {
-                foreach (var tuple in tuples.ToArray().AsSpan()) action(tuple.Item1, tuple.Item2);
-            }
+            tuples.SafeForEach(static (tuple, action) => action(tuple.Item1, tuple.Item2), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SafeForEach<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Action<TFirst, TSecond, TState> action, TState state) where TState : notnull
         {
-            if (tuples is ICollection<(TFirst, TSecond)> collection)
-            {
-                var array = ArrayPool<(TFirst, TSecond)>.Shared.Rent(collection.Count);
-                try
-                {
-                    collection.CopyTo(array, 0);
-                    foreach (var tuple in array.AsSpan(0, collection.Count)) action(tuple.Item1, tuple.Item2, state);
-                }
-                finally
-                {
-                    ArrayPool<(TFirst, TSecond)>.Shared.Return(array, RuntimeHelpers.IsReferenceOrContainsReferences<(TFirst, TSecond)>());
-                }
-            }
-            else
-            {
-                foreach (var tuple in tuples.ToArray().AsSpan()) action(tuple.Item1, tuple.Item2, state);
-            }
+            tuples.SafeForEach(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SafeForEach<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Action<TFirst, TSecond, TThird> action)
         {
-            if (tuples is ICollection<(TFirst, TSecond, TThird)> collection)
-            {
-                var array = ArrayPool<(TFirst, TSecond, TThird)>.Shared.Rent(collection.Count);
-                try
-                {
-                    collection.CopyTo(array, 0);
-                    foreach (var tuple in array.AsSpan(0, collection.Count)) action(tuple.Item1, tuple.Item2, tuple.Item3);
-                }
-                finally
-                {
-                    ArrayPool<(TFirst, TSecond, TThird)>.Shared.Return(array, RuntimeHelpers.IsReferenceOrContainsReferences<(TFirst, TSecond, TThird)>());
-                }
-            }
-            else
-            {
-                foreach (var tuple in tuples.ToArray().AsSpan()) action(tuple.Item1, tuple.Item2, tuple.Item3);
-            }
+            tuples.SafeForEach(static (tuple, action) => action(tuple.Item1, tuple.Item2, tuple.Item3), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SafeForEach<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Action<TFirst, TSecond, TThird, TState> action, TState state) where TState : notnull
         {
-            if (tuples is ICollection<(TFirst, TSecond, TThird)> collection)
-            {
-                var array = ArrayPool<(TFirst, TSecond, TThird)>.Shared.Rent(collection.Count);
-                try
-                {
-                    collection.CopyTo(array, 0);
-                    foreach (var tuple in array.AsSpan(0, collection.Count)) action(tuple.Item1, tuple.Item2, tuple.Item3, state);
-                }
-                finally
-                {
-                    ArrayPool<(TFirst, TSecond, TThird)>.Shared.Return(array, RuntimeHelpers.IsReferenceOrContainsReferences<(TFirst, TSecond, TThird)>());
-                }
-            }
-            else
-            {
-                foreach (var tuple in tuples.ToArray().AsSpan()) action(tuple.Item1, tuple.Item2, tuple.Item3, state);
-            }
+            tuples.SafeForEach(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
         }
 
         [Pure]

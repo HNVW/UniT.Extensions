@@ -12,36 +12,71 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
-            using var e1 = first.GetEnumerator();
-            using var e2 = second.GetEnumerator();
-            var e1HasValue = e1.MoveNext();
-            var e2HasValue = e2.MoveNext();
-            while (e1HasValue && e2HasValue)
+            using var enumerator1 = first.GetEnumerator();
+            using var enumerator2 = second.GetEnumerator();
+            var hasValue1 = enumerator1.MoveNext();
+            var hasValue2 = enumerator2.MoveNext();
+            while (hasValue1 && hasValue2)
             {
-                yield return resultSelector(e1.Current, e2.Current);
-                e1HasValue = e1.MoveNext();
-                e2HasValue = e2.MoveNext();
+                yield return resultSelector(enumerator1.Current, enumerator2.Current);
+                hasValue1 = enumerator1.MoveNext();
+                hasValue2 = enumerator2.MoveNext();
             }
-            if (e1HasValue || e2HasValue) throw new InvalidOperationException("The number of items are different. If this is intentional, use ZipShortest or ZipLongest instead.");
+            if (hasValue1 || hasValue2) throw new InvalidOperationException("The number of items are different. If this is intentional, use ZipShortest or ZipLongest instead.");
+        }
+
+        [Pure]
+        public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult, TState>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TState, TResult> resultSelector, TState state) where TState : notnull
+        {
+            using var enumerator1 = first.GetEnumerator();
+            using var enumerator2 = second.GetEnumerator();
+            var hasValue1 = enumerator1.MoveNext();
+            var hasValue2 = enumerator2.MoveNext();
+            while (hasValue1 && hasValue2)
+            {
+                yield return resultSelector(enumerator1.Current, enumerator2.Current, state);
+                hasValue1 = enumerator1.MoveNext();
+                hasValue2 = enumerator2.MoveNext();
+            }
+            if (hasValue1 || hasValue2) throw new InvalidOperationException("The number of items are different. If this is intentional, use ZipShortest or ZipLongest instead.");
         }
 
         [Pure]
         public static IEnumerable<TResult> Zip<TFirst, TSecond, TThird, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third, Func<TFirst, TSecond, TThird, TResult> resultSelector)
         {
-            using var e1 = first.GetEnumerator();
-            using var e2 = second.GetEnumerator();
-            using var e3 = third.GetEnumerator();
-            var e1HasValue = e1.MoveNext();
-            var e2HasValue = e2.MoveNext();
-            var e3HasValue = e3.MoveNext();
-            while (e1HasValue && e2HasValue && e3HasValue)
+            using var enumerator1 = first.GetEnumerator();
+            using var enumerator2 = second.GetEnumerator();
+            using var enumerator3 = third.GetEnumerator();
+            var hasValue1 = enumerator1.MoveNext();
+            var hasValue2 = enumerator2.MoveNext();
+            var hasValue3 = enumerator3.MoveNext();
+            while (hasValue1 && hasValue2 && hasValue3)
             {
-                yield return resultSelector(e1.Current, e2.Current, e3.Current);
-                e1HasValue = e1.MoveNext();
-                e2HasValue = e2.MoveNext();
-                e3HasValue = e3.MoveNext();
+                yield return resultSelector(enumerator1.Current, enumerator2.Current, enumerator3.Current);
+                hasValue1 = enumerator1.MoveNext();
+                hasValue2 = enumerator2.MoveNext();
+                hasValue3 = enumerator3.MoveNext();
             }
-            if (e1HasValue || e2HasValue || e3HasValue) throw new InvalidOperationException("The number of items are different. If this is intentional, use ZipShortest or ZipLongest instead.");
+            if (hasValue1 || hasValue2 || hasValue3) throw new InvalidOperationException("The number of items are different. If this is intentional, use ZipShortest or ZipLongest instead.");
+        }
+
+        [Pure]
+        public static IEnumerable<TResult> Zip<TFirst, TSecond, TThird, TResult, TState>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third, Func<TFirst, TSecond, TThird, TState, TResult> resultSelector, TState state) where TState : notnull
+        {
+            using var enumerator1 = first.GetEnumerator();
+            using var enumerator2 = second.GetEnumerator();
+            using var enumerator3 = third.GetEnumerator();
+            var hasValue1 = enumerator1.MoveNext();
+            var hasValue2 = enumerator2.MoveNext();
+            var hasValue3 = enumerator3.MoveNext();
+            while (hasValue1 && hasValue2 && hasValue3)
+            {
+                yield return resultSelector(enumerator1.Current, enumerator2.Current, enumerator3.Current, state);
+                hasValue1 = enumerator1.MoveNext();
+                hasValue2 = enumerator2.MoveNext();
+                hasValue3 = enumerator3.MoveNext();
+            }
+            if (hasValue1 || hasValue2 || hasValue3) throw new InvalidOperationException("The number of items are different. If this is intentional, use ZipShortest or ZipLongest instead.");
         }
 
         [Pure]
@@ -61,33 +96,46 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TResult> resultSelector)
         {
-            using var e1 = first.GetEnumerator();
-            using var e2 = second.GetEnumerator();
-            var e1HasValue = e1.MoveNext();
-            var e2HasValue = e2.MoveNext();
-            while (e1HasValue && e2HasValue)
+            using var enumerator1 = first.GetEnumerator();
+            using var enumerator2 = second.GetEnumerator();
+            while (enumerator1.TryGetNext(out var item1) && enumerator2.TryGetNext(out var item2))
             {
-                yield return resultSelector(e1.Current, e2.Current);
-                e1HasValue = e1.MoveNext();
-                e2HasValue = e2.MoveNext();
+                yield return resultSelector(item1, item2);
+            }
+        }
+
+        [Pure]
+        public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TResult, TState>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TState, TResult> resultSelector, TState state) where TState : notnull
+        {
+            using var enumerator1 = first.GetEnumerator();
+            using var enumerator2 = second.GetEnumerator();
+            while (enumerator1.TryGetNext(out var item1) && enumerator2.TryGetNext(out var item2))
+            {
+                yield return resultSelector(item1, item2, state);
             }
         }
 
         [Pure]
         public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TThird, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third, Func<TFirst, TSecond, TThird, TResult> resultSelector)
         {
-            using var e1 = first.GetEnumerator();
-            using var e2 = second.GetEnumerator();
-            using var e3 = third.GetEnumerator();
-            var e1HasValue = e1.MoveNext();
-            var e2HasValue = e2.MoveNext();
-            var e3HasValue = e3.MoveNext();
-            while (e1HasValue && e2HasValue && e3HasValue)
+            using var enumerator1 = first.GetEnumerator();
+            using var enumerator2 = second.GetEnumerator();
+            using var enumerator3 = third.GetEnumerator();
+            while (enumerator1.TryGetNext(out var item1) && enumerator2.TryGetNext(out var item2) && enumerator3.TryGetNext(out var item3))
             {
-                yield return resultSelector(e1.Current, e2.Current, e3.Current);
-                e1HasValue = e1.MoveNext();
-                e2HasValue = e2.MoveNext();
-                e3HasValue = e3.MoveNext();
+                yield return resultSelector(item1, item2, item3);
+            }
+        }
+
+        [Pure]
+        public static IEnumerable<TResult> ZipShortest<TFirst, TSecond, TThird, TResult, TState>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third, Func<TFirst, TSecond, TThird, TState, TResult> resultSelector, TState state) where TState : notnull
+        {
+            using var enumerator1 = first.GetEnumerator();
+            using var enumerator2 = second.GetEnumerator();
+            using var enumerator3 = third.GetEnumerator();
+            while (enumerator1.TryGetNext(out var item1) && enumerator2.TryGetNext(out var item2) && enumerator3.TryGetNext(out var item3))
+            {
+                yield return resultSelector(item1, item2, item3, state);
             }
         }
 
@@ -108,40 +156,66 @@ namespace UniT.Extensions
         [Pure]
         public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst?, TSecond?, TResult> resultSelector)
         {
-            using var e1 = first.GetEnumerator();
-            using var e2 = second.GetEnumerator();
-            var e1HasValue = e1.MoveNext();
-            var e2HasValue = e2.MoveNext();
-            while (e1HasValue || e2HasValue)
+            using var enumerator1 = first.GetEnumerator();
+            using var enumerator2 = second.GetEnumerator();
+            var hasValue1 = enumerator1.TryGetNext(out var item1);
+            var hasValue2 = enumerator2.TryGetNext(out var item2);
+            while (hasValue1 || hasValue2)
             {
-                yield return resultSelector(
-                    GetCurrentOrDefault(e1, e1HasValue),
-                    GetCurrentOrDefault(e2, e2HasValue)
-                );
-                e1HasValue = e1.MoveNext();
-                e2HasValue = e2.MoveNext();
+                yield return resultSelector(item1, item2);
+                hasValue1 = enumerator1.TryGetNext(out item1);
+                hasValue2 = enumerator2.TryGetNext(out item2);
+            }
+        }
+
+        [Pure]
+        public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TResult, TState>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst?, TSecond?, TState, TResult> resultSelector, TState state) where TState : notnull
+        {
+            using var enumerator1 = first.GetEnumerator();
+            using var enumerator2 = second.GetEnumerator();
+            var hasValue1 = enumerator1.TryGetNext(out var item1);
+            var hasValue2 = enumerator2.TryGetNext(out var item2);
+            while (hasValue1 || hasValue2)
+            {
+                yield return resultSelector(item1, item2, state);
+                hasValue1 = enumerator1.TryGetNext(out item1);
+                hasValue2 = enumerator2.TryGetNext(out item2);
             }
         }
 
         [Pure]
         public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TThird, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third, Func<TFirst?, TSecond?, TThird?, TResult> resultSelector)
         {
-            using var e1 = first.GetEnumerator();
-            using var e2 = second.GetEnumerator();
-            using var e3 = third.GetEnumerator();
-            var e1HasValue = e1.MoveNext();
-            var e2HasValue = e2.MoveNext();
-            var e3HasValue = e3.MoveNext();
-            while (e1HasValue || e2HasValue || e3HasValue)
+            using var enumerator1 = first.GetEnumerator();
+            using var enumerator2 = second.GetEnumerator();
+            using var enumerator3 = third.GetEnumerator();
+            var hasValue1 = enumerator1.TryGetNext(out var item1);
+            var hasValue2 = enumerator2.TryGetNext(out var item2);
+            var hasValue3 = enumerator3.TryGetNext(out var item3);
+            while (hasValue1 || hasValue2 || hasValue3)
             {
-                yield return resultSelector(
-                    GetCurrentOrDefault(e1, e1HasValue),
-                    GetCurrentOrDefault(e2, e2HasValue),
-                    GetCurrentOrDefault(e3, e3HasValue)
-                );
-                e1HasValue = e1.MoveNext();
-                e2HasValue = e2.MoveNext();
-                e3HasValue = e3.MoveNext();
+                yield return resultSelector(item1, item2, item3);
+                hasValue1 = enumerator1.TryGetNext(out item1);
+                hasValue2 = enumerator2.TryGetNext(out item2);
+                hasValue3 = enumerator3.TryGetNext(out item3);
+            }
+        }
+
+        [Pure]
+        public static IEnumerable<TResult> ZipLongest<TFirst, TSecond, TThird, TResult, TState>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third, Func<TFirst?, TSecond?, TThird?, TState, TResult> resultSelector, TState state) where TState : notnull
+        {
+            using var enumerator1 = first.GetEnumerator();
+            using var enumerator2 = second.GetEnumerator();
+            using var enumerator3 = third.GetEnumerator();
+            var hasValue1 = enumerator1.TryGetNext(out var item1);
+            var hasValue2 = enumerator2.TryGetNext(out var item2);
+            var hasValue3 = enumerator3.TryGetNext(out var item3);
+            while (hasValue1 || hasValue2 || hasValue3)
+            {
+                yield return resultSelector(item1, item2, item3, state);
+                hasValue1 = enumerator1.TryGetNext(out item1);
+                hasValue2 = enumerator2.TryGetNext(out item2);
+                hasValue3 = enumerator3.TryGetNext(out item3);
             }
         }
 
@@ -174,6 +248,20 @@ namespace UniT.Extensions
         }
 
         [Pure]
+        public static IEnumerable<TResult> Product<TFirst, TSecond, TResult, TState>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, TState, TResult> resultSelector, TState state) where TState : notnull
+        {
+            var firstCollection = first as ICollection<TFirst> ?? first.ToArray();
+            var secondCollection = second as ICollection<TSecond> ?? second.ToArray();
+            foreach (var i1 in firstCollection)
+            {
+                foreach (var i2 in secondCollection)
+                {
+                    yield return resultSelector(i1, i2, state);
+                }
+            }
+        }
+
+        [Pure]
         public static IEnumerable<TResult> Product<TFirst, TSecond, TThird, TResult>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third, Func<TFirst, TSecond, TThird, TResult> resultSelector)
         {
             var firstCollection = first as ICollection<TFirst> ?? first.ToArray();
@@ -186,6 +274,24 @@ namespace UniT.Extensions
                     foreach (var i3 in thirdCollection)
                     {
                         yield return resultSelector(i1, i2, i3);
+                    }
+                }
+            }
+        }
+
+        [Pure]
+        public static IEnumerable<TResult> Product<TFirst, TSecond, TThird, TResult, TState>(IEnumerable<TFirst> first, IEnumerable<TSecond> second, IEnumerable<TThird> third, Func<TFirst, TSecond, TThird, TState, TResult> resultSelector, TState state) where TState : notnull
+        {
+            var firstCollection = first as ICollection<TFirst> ?? first.ToArray();
+            var secondCollection = second as ICollection<TSecond> ?? second.ToArray();
+            var thirdCollection = third as ICollection<TThird> ?? third.ToArray();
+            foreach (var i1 in firstCollection)
+            {
+                foreach (var i2 in secondCollection)
+                {
+                    foreach (var i3 in thirdCollection)
+                    {
+                        yield return resultSelector(i1, i2, i3, state);
                     }
                 }
             }
@@ -322,8 +428,5 @@ namespace UniT.Extensions
         {
             while (count-- > 0) action();
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static T? GetCurrentOrDefault<T>(IEnumerator<T> enumerator, bool hasValue) => hasValue ? enumerator.Current : default;
     }
 }

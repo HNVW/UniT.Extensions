@@ -222,7 +222,6 @@ namespace UniT.Extensions
             foreach (var item in enumerable) action(item, state);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SafeForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
             if (enumerable is ICollection<T> collection)
@@ -240,11 +239,10 @@ namespace UniT.Extensions
             }
             else
             {
-                foreach (var item in enumerable.ToArray().AsSpan()) action(item);
+                foreach (var item in enumerable.ToArray()) action(item);
             }
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SafeForEach<T, TState>(this IEnumerable<T> enumerable, Action<T, TState> action, TState state) where TState : notnull
         {
             if (enumerable is ICollection<T> collection)
@@ -262,7 +260,7 @@ namespace UniT.Extensions
             }
             else
             {
-                foreach (var item in enumerable.ToArray().AsSpan()) action(item, state);
+                foreach (var item in enumerable.ToArray()) action(item, state);
             }
         }
 

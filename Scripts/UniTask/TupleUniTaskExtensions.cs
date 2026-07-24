@@ -9,63 +9,123 @@ namespace UniT.Extensions
     public static class TupleUniTaskExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask ForEachAwaitAsync<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, UniTask> action)
+        public static UniTask ForEachAwaitAsync<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, UniTask> action)
         {
-            foreach (var tuple in tuples) await action(tuple.Item1, tuple.Item2);
+            return tuples.ForEachAwaitAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask ForEachAwaitAsync<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, UniTask> action, TState state) where TState : notnull
+        public static UniTask ForEachAwaitAsync<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, UniTask> action, TState state) where TState : notnull
         {
-            foreach (var tuple in tuples) await action(tuple.Item1, tuple.Item2, state);
+            return tuples.ForEachAwaitAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask ForEachAwaitAsync<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, UniTask> action)
+        public static UniTask ForEachAwaitAsync<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, UniTask> action)
         {
-            foreach (var tuple in tuples) await action(tuple.Item1, tuple.Item2, tuple.Item3);
+            return tuples.ForEachAwaitAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2, tuple.Item3), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask ForEachAwaitAsync<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, UniTask> action, TState state) where TState : notnull
+        public static UniTask ForEachAwaitAsync<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, UniTask> action, TState state) where TState : notnull
         {
-            foreach (var tuple in tuples) await action(tuple.Item1, tuple.Item2, tuple.Item3, state);
+            return tuples.ForEachAwaitAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask ForEachAsync<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, UniTask> action)
+        public static UniTask ForEachAsync<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, UniTask> action)
         {
-            await tuples.Select(action);
+            return tuples.ForEachAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask ForEachAsync<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, UniTask> action, TState state) where TState : notnull
+        public static UniTask ForEachAsync<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, UniTask> action, TState state) where TState : notnull
         {
-            await tuples.Select(action, state);
+            return tuples.ForEachAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask ForEachAsync<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, UniTask> action)
+        public static UniTask ForEachAsync<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, UniTask> action)
         {
-            await tuples.Select(action);
+            return tuples.ForEachAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2, tuple.Item3), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask ForEachAsync<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, UniTask> action, TState state) where TState : notnull
+        public static UniTask ForEachAsync<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, UniTask> action, TState state) where TState : notnull
         {
-            await tuples.Select(action, state);
+            return tuples.ForEachAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask<IEnumerable<TResult>> SelectAsync<TFirst, TSecond, TResult>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, UniTask<TResult>> selector)
+        public static UniTask SafeForEachAwaitAsync<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, UniTask> action)
         {
-            return await tuples.Select(selector);
+            return tuples.SafeForEachAwaitAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static async UniTask<IEnumerable<TResult>> SelectAsync<TFirst, TSecond, TThird, TResult>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, UniTask<TResult>> selector)
+        public static UniTask SafeForEachAwaitAsync<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, UniTask> action, TState state) where TState : notnull
         {
-            return await tuples.Select(selector);
+            return tuples.SafeForEachAwaitAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask SafeForEachAwaitAsync<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, UniTask> action)
+        {
+            return tuples.SafeForEachAwaitAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2, tuple.Item3), action);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask SafeForEachAwaitAsync<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, UniTask> action, TState state) where TState : notnull
+        {
+            return tuples.SafeForEachAwaitAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask SafeForEachAsync<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, UniTask> action)
+        {
+            return tuples.SafeForEachAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2), action);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask SafeForEachAsync<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, UniTask> action, TState state) where TState : notnull
+        {
+            return tuples.SafeForEachAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask SafeForEachAsync<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, UniTask> action)
+        {
+            return tuples.SafeForEachAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2, tuple.Item3), action);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask SafeForEachAsync<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, UniTask> action, TState state) where TState : notnull
+        {
+            return tuples.SafeForEachAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask<TResult[]> SelectAsync<TFirst, TSecond, TResult>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, UniTask<TResult>> selector)
+        {
+            return tuples.SelectAsync(static (tuple, selector) => selector(tuple.Item1, tuple.Item2), selector);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask<TResult[]> SelectAsync<TFirst, TSecond, TResult, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, UniTask<TResult>> selector, TState state) where TState : notnull
+        {
+            return tuples.SelectAsync(static (tuple, state) => state.selector(tuple.Item1, tuple.Item2, state.state), (selector, state));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask<TResult[]> SelectAsync<TFirst, TSecond, TThird, TResult>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, UniTask<TResult>> selector)
+        {
+            return tuples.SelectAsync(static (tuple, selector) => selector(tuple.Item1, tuple.Item2, tuple.Item3), selector);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask<TResult[]> SelectAsync<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, UniTask<TResult>> selector, TState state) where TState : notnull
+        {
+            return tuples.SelectAsync(static (tuple, state) => state.selector(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (selector, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

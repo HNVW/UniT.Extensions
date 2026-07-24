@@ -51,7 +51,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Clear<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, Action<TValue> action) where TKey : notnull
         {
-            dictionary.ForEach(action);
+            dictionary.ForEach(static (kv, action) => action(kv.Value), action);
             dictionary.Clear();
         }
 
@@ -180,539 +180,451 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue> First<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate)
+        public static KeyValuePair<TKey, TValue> First<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate) where TKey : notnull
         {
             return dictionary.First(kv => predicate(kv.Key, kv.Value));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue>? FirstOrDefault<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate)
+        public static KeyValuePair<TKey, TValue>? FirstOrDefault<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate) where TKey : notnull
         {
             return dictionary.FirstOrDefault(kv => predicate(kv.Key, kv.Value));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue> Last<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate)
+        public static KeyValuePair<TKey, TValue> Last<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate) where TKey : notnull
         {
             return dictionary.Last(kv => predicate(kv.Key, kv.Value));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue>? LastOrDefault<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate)
+        public static KeyValuePair<TKey, TValue>? LastOrDefault<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate) where TKey : notnull
         {
             return dictionary.LastOrDefault(kv => predicate(kv.Key, kv.Value));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue> Single<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate)
+        public static KeyValuePair<TKey, TValue> Single<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate) where TKey : notnull
         {
             return dictionary.Single(kv => predicate(kv.Key, kv.Value));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue>? SingleOrDefault<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate)
+        public static KeyValuePair<TKey, TValue>? SingleOrDefault<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate) where TKey : notnull
         {
             return dictionary.SingleOrDefault(kv => predicate(kv.Key, kv.Value));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<TKey, TValue>> Where<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate)
+        public static IEnumerable<KeyValuePair<TKey, TValue>> Where<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate) where TKey : notnull
         {
             return dictionary.Where(static (kv, predicate) => predicate(kv.Key, kv.Value), predicate);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<TKey, TValue>> Where<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TState, bool> predicate, TState state) where TState : notnull
+        public static IEnumerable<KeyValuePair<TKey, TValue>> Where<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TState, bool> predicate, TState state) where TKey : notnull where TState : notnull
         {
             return dictionary.Where(static (kv, state) => state.predicate(kv.Key, kv.Value, state.state), (predicate, state));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<TKey, TValue>> WhereKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, bool> predicate)
+        public static IEnumerable<KeyValuePair<TKey, TValue>> WhereKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, bool> predicate) where TKey : notnull
         {
             return dictionary.Where(static (kv, predicate) => predicate(kv.Key), predicate);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<TKey, TValue>> WhereKey<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TState, bool> predicate, TState state) where TState : notnull
+        public static IEnumerable<KeyValuePair<TKey, TValue>> WhereKey<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TState, bool> predicate, TState state) where TKey : notnull where TState : notnull
         {
             return dictionary.Where(static (kv, state) => state.predicate(kv.Key, state.state), (predicate, state));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<TKey, TValue>> WhereValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, bool> predicate)
+        public static IEnumerable<KeyValuePair<TKey, TValue>> WhereValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, bool> predicate) where TKey : notnull
         {
             return dictionary.Where(static (kv, predicate) => predicate(kv.Value), predicate);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<TKey, TValue>> WhereValue<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TState, bool> predicate, TState state) where TState : notnull
+        public static IEnumerable<KeyValuePair<TKey, TValue>> WhereValue<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TState, bool> predicate, TState state) where TKey : notnull where TState : notnull
         {
             return dictionary.Where(static (kv, state) => state.predicate(kv.Value, state.state), (predicate, state));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> Select<TKey, TValue, TResult>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TResult> selector)
+        public static IEnumerable<TResult> Select<TKey, TValue, TResult>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TResult> selector) where TKey : notnull
         {
             return dictionary.Select(static (kv, selector) => selector(kv.Key, kv.Value), selector);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> Select<TKey, TValue, TResult, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TState, TResult> selector, TState state) where TState : notnull
+        public static IEnumerable<TResult> Select<TKey, TValue, TResult, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TState, TResult> selector, TState state) where TKey : notnull where TState : notnull
         {
             return dictionary.Select(static (kv, state) => state.selector(kv.Key, kv.Value, state.state), (selector, state));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TKey> SelectKeys<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
+        public static IEnumerable<TKey> SelectKeys<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary) where TKey : notnull
         {
             return dictionary.Select(static kv => kv.Key);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectKeys<TKey, TValue, TResult>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TResult> selector)
+        public static IEnumerable<TResult> SelectKeys<TKey, TValue, TResult>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TResult> selector) where TKey : notnull
         {
             return dictionary.Select(static (kv, selector) => selector(kv.Key), selector);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectKeys<TKey, TValue, TResult, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TState, TResult> selector, TState state) where TState : notnull
+        public static IEnumerable<TResult> SelectKeys<TKey, TValue, TResult, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TState, TResult> selector, TState state) where TKey : notnull where TState : notnull
         {
             return dictionary.Select(static (kv, state) => state.selector(kv.Key, state.state), (selector, state));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TValue> SelectValues<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
+        public static IEnumerable<TValue> SelectValues<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary) where TKey : notnull
         {
             return dictionary.Select(static kv => kv.Value);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectValues<TKey, TValue, TResult>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TResult> selector)
+        public static IEnumerable<TResult> SelectValues<TKey, TValue, TResult>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TResult> selector) where TKey : notnull
         {
             return dictionary.Select(static (kv, selector) => selector(kv.Value), selector);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectValues<TKey, TValue, TResult, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TState, TResult> selector, TState state) where TState : notnull
+        public static IEnumerable<TResult> SelectValues<TKey, TValue, TResult, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TState, TResult> selector, TState state) where TKey : notnull where TState : notnull
         {
             return dictionary.Select(static (kv, state) => state.selector(kv.Value, state.state), (selector, state));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectMany<TKey, TValue, TResult>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, IEnumerable<TResult>> selector)
+        public static IEnumerable<TResult> SelectMany<TKey, TValue, TResult>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, IEnumerable<TResult>> selector) where TKey : notnull
         {
             return dictionary.SelectMany(kv => selector(kv.Key, kv.Value));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TAccumulate Aggregate<TKey, TValue, TAccumulate>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, TAccumulate seed, Func<TAccumulate, TKey, TValue, TAccumulate> func)
+        public static TAccumulate Aggregate<TKey, TValue, TAccumulate>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, TAccumulate seed, Func<TAccumulate, TKey, TValue, TAccumulate> func) where TKey : notnull
         {
             return dictionary.Aggregate(seed, (current, kv) => func(current, kv.Key, kv.Value));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TResult Min<TKey, TValue, TResult>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TResult> selector)
+        public static TResult Min<TKey, TValue, TResult>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TResult> selector) where TKey : notnull
         {
             return dictionary.Min(kv => selector(kv.Key, kv.Value));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TResult Max<TKey, TValue, TResult>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TResult> selector)
+        public static TResult Max<TKey, TValue, TResult>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TResult> selector) where TKey : notnull
         {
             return dictionary.Max(kv => selector(kv.Key, kv.Value));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue> MinBy<TKey, TValue, TCompareKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null)
+        public static KeyValuePair<TKey, TValue> MinBy<TKey, TValue, TCompareKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null) where TKey : notnull
         {
             return dictionary.MinBy(kv => keySelector(kv.Key, kv.Value), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue> MinByKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null)
+        public static KeyValuePair<TKey, TValue> MinByKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null) where TKey : notnull
         {
             return dictionary.MinBy(static kv => kv.Key, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue> MinByKey<TKey, TValue, TCompareKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null)
+        public static KeyValuePair<TKey, TValue> MinByKey<TKey, TValue, TCompareKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null) where TKey : notnull
         {
             return dictionary.MinBy(kv => keySelector(kv.Key), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue> MinByValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null)
+        public static KeyValuePair<TKey, TValue> MinByValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null) where TKey : notnull
         {
             return dictionary.MinBy(static kv => kv.Value, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue> MinByValue<TKey, TValue, TCompareKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null)
+        public static KeyValuePair<TKey, TValue> MinByValue<TKey, TValue, TCompareKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null) where TKey : notnull
         {
             return dictionary.MinBy(kv => keySelector(kv.Value), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue> MaxBy<TKey, TValue, TCompareKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null)
+        public static KeyValuePair<TKey, TValue> MaxBy<TKey, TValue, TCompareKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null) where TKey : notnull
         {
             return dictionary.MaxBy(kv => keySelector(kv.Key, kv.Value), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue> MaxByKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null)
+        public static KeyValuePair<TKey, TValue> MaxByKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null) where TKey : notnull
         {
             return dictionary.MaxBy(static kv => kv.Key, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue> MaxByKey<TKey, TValue, TCompareKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null)
+        public static KeyValuePair<TKey, TValue> MaxByKey<TKey, TValue, TCompareKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null) where TKey : notnull
         {
             return dictionary.MaxBy(kv => keySelector(kv.Key), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue> MaxByValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null)
+        public static KeyValuePair<TKey, TValue> MaxByValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null) where TKey : notnull
         {
             return dictionary.MaxBy(static kv => kv.Value, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KeyValuePair<TKey, TValue> MaxByValue<TKey, TValue, TCompareKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null)
+        public static KeyValuePair<TKey, TValue> MaxByValue<TKey, TValue, TCompareKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null) where TKey : notnull
         {
             return dictionary.MaxBy(kv => keySelector(kv.Value), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Any<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate)
+        public static bool Any<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate) where TKey : notnull
         {
             return dictionary.Any(kv => predicate(kv.Key, kv.Value));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool All<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate)
+        public static bool All<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, bool> predicate) where TKey : notnull
         {
             return dictionary.All(kv => predicate(kv.Key, kv.Value));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ForEach<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TKey, TValue> action)
+        public static void ForEach<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TKey, TValue> action) where TKey : notnull
         {
-            foreach (var (key, value) in dictionary) action(key, value);
+            dictionary.ForEach(static (kv, action) => action(kv.Key, kv.Value), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ForEach<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TKey, TValue, TState> action, TState state) where TState : notnull
+        public static void ForEach<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TKey, TValue, TState> action, TState state) where TKey : notnull where TState : notnull
         {
-            foreach (var (key, value) in dictionary) action(key, value, state);
+            dictionary.ForEach(static (kv, state) => state.action(kv.Key, kv.Value, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ForEach<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TValue> action)
+        public static void SafeForEach<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TKey, TValue> action) where TKey : notnull
         {
-            foreach (var (_, value) in dictionary) action(value);
+            dictionary.SafeForEach(static (kv, action) => action(kv.Key, kv.Value), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ForEach<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TValue, TState> action, TState state) where TState : notnull
+        public static void SafeForEach<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TKey, TValue, TState> action, TState state) where TKey : notnull where TState : notnull
         {
-            foreach (var (_, value) in dictionary) action(value, state);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeForEach<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TKey, TValue> action)
-        {
-            if (dictionary is ICollection<KeyValuePair<TKey, TValue>> collection)
-            {
-                var array = ArrayPool<KeyValuePair<TKey, TValue>>.Shared.Rent(collection.Count);
-                try
-                {
-                    collection.CopyTo(array, 0);
-                    foreach (var (key, value) in array.AsSpan(0, collection.Count)) action(key, value);
-                }
-                finally
-                {
-                    ArrayPool<KeyValuePair<TKey, TValue>>.Shared.Return(array, RuntimeHelpers.IsReferenceOrContainsReferences<KeyValuePair<TKey, TValue>>());
-                }
-            }
-            else
-            {
-                foreach (var (key, value) in dictionary.ToArray().AsSpan()) action(key, value);
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeForEach<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TKey, TValue, TState> action, TState state) where TState : notnull
-        {
-            if (dictionary is ICollection<KeyValuePair<TKey, TValue>> collection)
-            {
-                var array = ArrayPool<KeyValuePair<TKey, TValue>>.Shared.Rent(collection.Count);
-                try
-                {
-                    collection.CopyTo(array, 0);
-                    foreach (var (key, value) in array.AsSpan(0, collection.Count)) action(key, value, state);
-                }
-                finally
-                {
-                    ArrayPool<KeyValuePair<TKey, TValue>>.Shared.Return(array, RuntimeHelpers.IsReferenceOrContainsReferences<KeyValuePair<TKey, TValue>>());
-                }
-            }
-            else
-            {
-                foreach (var (key, value) in dictionary.ToArray().AsSpan()) action(key, value, state);
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeForEach<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TValue> action)
-        {
-            if (dictionary is ICollection<KeyValuePair<TKey, TValue>> collection)
-            {
-                var array = ArrayPool<KeyValuePair<TKey, TValue>>.Shared.Rent(collection.Count);
-                try
-                {
-                    collection.CopyTo(array, 0);
-                    foreach (var (_, value) in array.AsSpan(0, collection.Count)) action(value);
-                }
-                finally
-                {
-                    ArrayPool<KeyValuePair<TKey, TValue>>.Shared.Return(array, RuntimeHelpers.IsReferenceOrContainsReferences<KeyValuePair<TKey, TValue>>());
-                }
-            }
-            else
-            {
-                foreach (var (_, value) in dictionary.ToArray().AsSpan()) action(value);
-            }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeForEach<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TValue, TState> action, TState state) where TState : notnull
-        {
-            if (dictionary is ICollection<KeyValuePair<TKey, TValue>> collection)
-            {
-                var array = ArrayPool<KeyValuePair<TKey, TValue>>.Shared.Rent(collection.Count);
-                try
-                {
-                    collection.CopyTo(array, 0);
-                    foreach (var (_, value) in array.AsSpan(0, collection.Count)) action(value, state);
-                }
-                finally
-                {
-                    ArrayPool<KeyValuePair<TKey, TValue>>.Shared.Return(array, RuntimeHelpers.IsReferenceOrContainsReferences<KeyValuePair<TKey, TValue>>());
-                }
-            }
-            else
-            {
-                foreach (var (_, value) in dictionary.ToArray().AsSpan()) action(value, state);
-            }
+            dictionary.SafeForEach(static (kv, state) => state.action(kv.Key, kv.Value, state.state), (action, state));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IGrouping<TGroupKey, KeyValuePair<TKey, TValue>>> GroupBy<TKey, TValue, TGroupKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TGroupKey> keySelector)
+        public static IEnumerable<IGrouping<TGroupKey, KeyValuePair<TKey, TValue>>> GroupBy<TKey, TValue, TGroupKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TGroupKey> keySelector) where TKey : notnull
         {
             return dictionary.GroupBy(kv => keySelector(kv.Key, kv.Value));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IGrouping<TKey, KeyValuePair<TKey, TValue>>> GroupByKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
+        public static IEnumerable<IGrouping<TKey, KeyValuePair<TKey, TValue>>> GroupByKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary) where TKey : notnull
         {
             return dictionary.GroupBy(static kv => kv.Key);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IGrouping<TGroupKey, KeyValuePair<TKey, TValue>>> GroupByKey<TKey, TValue, TGroupKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TGroupKey> keySelector)
+        public static IEnumerable<IGrouping<TGroupKey, KeyValuePair<TKey, TValue>>> GroupByKey<TKey, TValue, TGroupKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TGroupKey> keySelector) where TKey : notnull
         {
             return dictionary.GroupBy(kv => keySelector(kv.Key));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IGrouping<TValue, KeyValuePair<TKey, TValue>>> GroupByValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
+        public static IEnumerable<IGrouping<TValue, KeyValuePair<TKey, TValue>>> GroupByValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary) where TKey : notnull
         {
             return dictionary.GroupBy(static kv => kv.Value);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IGrouping<TGroupKey, KeyValuePair<TKey, TValue>>> GroupByValue<TKey, TValue, TGroupKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TGroupKey> keySelector)
+        public static IEnumerable<IGrouping<TGroupKey, KeyValuePair<TKey, TValue>>> GroupByValue<TKey, TValue, TGroupKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TGroupKey> keySelector) where TKey : notnull
         {
             return dictionary.GroupBy(kv => keySelector(kv.Value));
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderBy<TKey, TValue, TOrderKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderBy<TKey, TValue, TOrderKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null) where TKey : notnull
         {
             return dictionary.OrderBy(kv => keySelector(kv.Key, kv.Value), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null) where TKey : notnull
         {
             return dictionary.OrderBy(static kv => kv.Key, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByKey<TKey, TValue, TOrderKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByKey<TKey, TValue, TOrderKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null) where TKey : notnull
         {
             return dictionary.OrderBy(kv => keySelector(kv.Key), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null) where TKey : notnull
         {
             return dictionary.OrderBy(static kv => kv.Value, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByValue<TKey, TValue, TOrderKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByValue<TKey, TValue, TOrderKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null) where TKey : notnull
         {
             return dictionary.OrderBy(kv => keySelector(kv.Value), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByDescending<TKey, TValue, TOrderKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByDescending<TKey, TValue, TOrderKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null) where TKey : notnull
         {
             return dictionary.OrderByDescending(kv => keySelector(kv.Key, kv.Value), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByDescendingKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByDescendingKey<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null) where TKey : notnull
         {
             return dictionary.OrderByDescending(static kv => kv.Key, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByDescendingKey<TKey, TValue, TOrderKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByDescendingKey<TKey, TValue, TOrderKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null) where TKey : notnull
         {
             return dictionary.OrderByDescending(kv => keySelector(kv.Key), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByDescendingValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByDescendingValue<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null) where TKey : notnull
         {
             return dictionary.OrderByDescending(static kv => kv.Value, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByDescendingValue<TKey, TValue, TOrderKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> OrderByDescendingValue<TKey, TValue, TOrderKey>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null) where TKey : notnull
         {
             return dictionary.OrderByDescending(kv => keySelector(kv.Value), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenBy<TKey, TValue, TOrderKey>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenBy<TKey, TValue, TOrderKey>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null) where TKey : notnull
         {
             return dictionary.ThenBy(kv => keySelector(kv.Key, kv.Value), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByKey<TKey, TValue>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByKey<TKey, TValue>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null) where TKey : notnull
         {
             return dictionary.ThenBy(static kv => kv.Key, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByKey<TKey, TValue, TOrderKey>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByKey<TKey, TValue, TOrderKey>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null) where TKey : notnull
         {
             return dictionary.ThenBy(kv => keySelector(kv.Key), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByValue<TKey, TValue>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByValue<TKey, TValue>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null) where TKey : notnull
         {
             return dictionary.ThenBy(static kv => kv.Value, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByValue<TKey, TValue, TOrderKey>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByValue<TKey, TValue, TOrderKey>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null) where TKey : notnull
         {
             return dictionary.ThenBy(kv => keySelector(kv.Value), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByDescending<TKey, TValue, TOrderKey>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByDescending<TKey, TValue, TOrderKey>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null) where TKey : notnull
         {
             return dictionary.ThenByDescending(kv => keySelector(kv.Key, kv.Value), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByDescendingKey<TKey, TValue>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByDescendingKey<TKey, TValue>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TKey>? comparer = null) where TKey : notnull
         {
             return dictionary.ThenByDescending(static kv => kv.Key, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByDescendingKey<TKey, TValue, TOrderKey>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByDescendingKey<TKey, TValue, TOrderKey>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null) where TKey : notnull
         {
             return dictionary.ThenByDescending(kv => keySelector(kv.Key), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByDescendingValue<TKey, TValue>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByDescendingValue<TKey, TValue>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, IComparer<TValue>? comparer = null) where TKey : notnull
         {
             return dictionary.ThenByDescending(static kv => kv.Value, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByDescendingValue<TKey, TValue, TOrderKey>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null)
+        public static IOrderedEnumerable<KeyValuePair<TKey, TValue>> ThenByDescendingValue<TKey, TValue, TOrderKey>(this IOrderedEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TValue, TOrderKey> keySelector, IComparer<TOrderKey>? comparer = null) where TKey : notnull
         {
             return dictionary.ThenByDescending(kv => keySelector(kv.Value), comparer);
         }

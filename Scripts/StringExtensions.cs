@@ -46,16 +46,14 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string TrimStart(this string str, string trimStr)
         {
-            var span = str.AsSpan();
-            return span.StartsWith(trimStr) ? span[trimStr.Length..].ToString() : str;
+            return str.StartsWith(trimStr) ? str[trimStr.Length..] : str;
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string TrimEnd(this string str, string trimStr)
         {
-            var span = str.AsSpan();
-            return span.EndsWith(trimStr) ? span[..^trimStr.Length].ToString() : str;
+            return str.EndsWith(trimStr) ? str[..^trimStr.Length] : str;
         }
 
         [Pure]

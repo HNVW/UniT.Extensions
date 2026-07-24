@@ -127,5 +127,65 @@ namespace UniT.Extensions
         {
             return dictionary.TryAddAsync(key, valueFactory, key);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask ForEachAwaitAsync<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, UniTask> action) where TKey : notnull
+        {
+            return dictionary.ForEachAwaitAsync(static (kv, action) => action(kv.Key, kv.Value), action);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask ForEachAwaitAsync<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TState, UniTask> action, TState state) where TKey : notnull where TState : notnull
+        {
+            return dictionary.ForEachAwaitAsync(static (kv, state) => state.action(kv.Key, kv.Value, state.state), (action, state));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask ForEachAsync<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, UniTask> action) where TKey : notnull
+        {
+            return dictionary.ForEachAsync(static (kv, action) => action(kv.Key, kv.Value), action);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask ForEachAsync<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TState, UniTask> action, TState state) where TKey : notnull where TState : notnull
+        {
+            return dictionary.ForEachAsync(static (kv, state) => state.action(kv.Key, kv.Value, state.state), (action, state));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask SafeForEachAwaitAsync<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, UniTask> action) where TKey : notnull
+        {
+            return dictionary.SafeForEachAwaitAsync(static (kv, action) => action(kv.Key, kv.Value), action);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask SafeForEachAwaitAsync<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TState, UniTask> action, TState state) where TKey : notnull where TState : notnull
+        {
+            return dictionary.SafeForEachAwaitAsync(static (kv, state) => state.action(kv.Key, kv.Value, state.state), (action, state));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask SafeForEachAsync<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, UniTask> action) where TKey : notnull
+        {
+            return dictionary.SafeForEachAsync(static (kv, action) => action(kv.Key, kv.Value), action);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask SafeForEachAsync<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TState, UniTask> action, TState state) where TKey : notnull where TState : notnull
+        {
+            return dictionary.SafeForEachAsync(static (kv, state) => state.action(kv.Key, kv.Value, state.state), (action, state));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask<TResult[]> SelectAsync<TKey, TValue, TResult>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, UniTask<TResult>> selector) where TKey : notnull
+        {
+            return dictionary.SelectAsync(static (kv, selector) => selector(kv.Key, kv.Value), selector);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static UniTask<TResult[]> SelectAsync<TKey, TValue, TResult, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TState, UniTask<TResult>> selector, TState state) where TKey : notnull where TState : notnull
+        {
+            return dictionary.SelectAsync(static (kv, state) => state.selector(kv.Key, kv.Value, state.state), (selector, state));
+        }
     }
 }

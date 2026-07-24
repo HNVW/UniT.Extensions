@@ -11,30 +11,30 @@ namespace UniT.Extensions
     {
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGrouping<TKey, TItem> MinByKey<TKey, TItem>(this IEnumerable<IGrouping<TKey, TItem>> dictionary, IComparer<TKey>? comparer = null)
+        public static IGrouping<TKey, TItem> MinByKey<TKey, TItem>(this IEnumerable<IGrouping<TKey, TItem>> enumerable, IComparer<TKey>? comparer = null)
         {
-            return dictionary.MinBy(static kv => kv.Key, comparer);
+            return enumerable.MinBy(static kv => kv.Key, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGrouping<TKey, TItem> MinByKey<TKey, TItem, TCompareKey>(this IEnumerable<IGrouping<TKey, TItem>> dictionary, Func<TKey, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null)
+        public static IGrouping<TKey, TItem> MinByKey<TKey, TItem, TCompareKey>(this IEnumerable<IGrouping<TKey, TItem>> enumerable, Func<TKey, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null)
         {
-            return dictionary.MinBy(kv => keySelector(kv.Key), comparer);
+            return enumerable.MinBy(kv => keySelector(kv.Key), comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGrouping<TKey, TItem> MaxByKey<TKey, TItem>(this IEnumerable<IGrouping<TKey, TItem>> dictionary, IComparer<TKey>? comparer = null)
+        public static IGrouping<TKey, TItem> MaxByKey<TKey, TItem>(this IEnumerable<IGrouping<TKey, TItem>> enumerable, IComparer<TKey>? comparer = null)
         {
-            return dictionary.MaxBy(static kv => kv.Key, comparer);
+            return enumerable.MaxBy(static kv => kv.Key, comparer);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGrouping<TKey, TItem> MaxByKey<TKey, TItem, TCompareKey>(this IEnumerable<IGrouping<TKey, TItem>> dictionary, Func<TKey, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null)
+        public static IGrouping<TKey, TItem> MaxByKey<TKey, TItem, TCompareKey>(this IEnumerable<IGrouping<TKey, TItem>> enumerable, Func<TKey, TCompareKey> keySelector, IComparer<TCompareKey>? comparer = null)
         {
-            return dictionary.MaxBy(kv => keySelector(kv.Key), comparer);
+            return enumerable.MaxBy(kv => keySelector(kv.Key), comparer);
         }
 
         [Pure]
