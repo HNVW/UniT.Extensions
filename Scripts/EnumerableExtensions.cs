@@ -192,7 +192,7 @@ namespace UniT.Extensions
         }
 
         [Pure]
-        public static IEnumerable<T> Where<T, TState>(this IEnumerable<T> enumerable, Func<T, TState, bool> predicate, TState state) where TState : notnull
+        public static IEnumerable<T> Where<T, TState>(this IEnumerable<T> enumerable, Func<T, TState, bool> predicate, TState state)
         {
             foreach (var item in enumerable)
             {
@@ -202,7 +202,7 @@ namespace UniT.Extensions
         }
 
         [Pure]
-        public static IEnumerable<TResult> Select<T, TResult, TState>(this IEnumerable<T> enumerable, Func<T, TState, TResult> selector, TState state) where TState : notnull
+        public static IEnumerable<TResult> Select<T, TResult, TState>(this IEnumerable<T> enumerable, Func<T, TState, TResult> selector, TState state)
         {
             foreach (var item in enumerable)
             {
@@ -211,42 +211,22 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ForEach<T, TState>(this IEnumerable<T> enumerable, Action<T, TState> action, TState state)
+        {
+            foreach (var item in enumerable) action(item, state);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
             foreach (var item in enumerable) action(item);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ForEach<T, TState>(this IEnumerable<T> enumerable, Action<T, TState> action, TState state) where TState : notnull
-        {
-            foreach (var item in enumerable) action(item, state);
-        }
-
-        public static void SafeForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        public static void SafeForEach<T, TState>(this IEnumerable<T> enumerable, Action<T, TState> action, TState state)
         {
             if (enumerable is ICollection<T> collection)
             {
-                var array = ArrayPool<T>.Shared.Rent(collection.Count);
-                try
-                {
-                    collection.CopyTo(array, 0);
-                    foreach (var item in array.AsSpan(0, collection.Count)) action(item);
-                }
-                finally
-                {
-                    ArrayPool<T>.Shared.Return(array, RuntimeHelpers.IsReferenceOrContainsReferences<T>());
-                }
-            }
-            else
-            {
-                foreach (var item in enumerable.ToArray()) action(item);
-            }
-        }
-
-        public static void SafeForEach<T, TState>(this IEnumerable<T> enumerable, Action<T, TState> action, TState state) where TState : notnull
-        {
-            if (enumerable is ICollection<T> collection)
-            {
+                if (collection.Count is 0) return;
                 var array = ArrayPool<T>.Shared.Rent(collection.Count);
                 try
                 {
@@ -262,6 +242,12 @@ namespace UniT.Extensions
             {
                 foreach (var item in enumerable.ToArray()) action(item, state);
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void SafeForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            enumerable.SafeForEach(static (item, action) => action(item), action);
         }
 
         [Pure]
@@ -463,6 +449,7 @@ namespace UniT.Extensions
         {
             if (enumerable is ICollection<T> collection)
             {
+                if (collection.Count is 0) yield break;
                 var array = ArrayPool<T>.Shared.Rent(collection.Count);
                 try
                 {

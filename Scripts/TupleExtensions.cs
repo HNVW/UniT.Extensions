@@ -2,7 +2,6 @@
 namespace UniT.Extensions
 {
     using System;
-    using System.Buffers;
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Linq;
@@ -96,6 +95,13 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<(TFirst, TSecond)> Where<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, bool> predicate, TState state)
+        {
+            return tuples.Where(static (tuple, state) => state.predicate(tuple.Item1, tuple.Item2, state.state), (predicate, state));
+        }
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<(TFirst, TSecond)> Where<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, bool> predicate)
         {
             return tuples.Where(static (tuple, predicate) => predicate(tuple.Item1, tuple.Item2), predicate);
@@ -103,9 +109,9 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<(TFirst, TSecond)> Where<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, bool> predicate, TState state) where TState : notnull
+        public static IEnumerable<(TFirst, TSecond, TThird)> Where<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, bool> predicate, TState state)
         {
-            return tuples.Where(static (tuple, state) => state.predicate(tuple.Item1, tuple.Item2, state.state), (predicate, state));
+            return tuples.Where(static (tuple, state) => state.predicate(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (predicate, state));
         }
 
         [Pure]
@@ -117,9 +123,9 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<(TFirst, TSecond, TThird)> Where<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, bool> predicate, TState state) where TState : notnull
+        public static IEnumerable<(TFirst, TSecond)> WhereFirst<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TState, bool> predicate, TState state)
         {
-            return tuples.Where(static (tuple, state) => state.predicate(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (predicate, state));
+            return tuples.Where(static (tuple, state) => state.predicate(tuple.Item1, state.state), (predicate, state));
         }
 
         [Pure]
@@ -131,7 +137,7 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<(TFirst, TSecond)> WhereFirst<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TState, bool> predicate, TState state) where TState : notnull
+        public static IEnumerable<(TFirst, TSecond, TThird)> WhereFirst<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TState, bool> predicate, TState state)
         {
             return tuples.Where(static (tuple, state) => state.predicate(tuple.Item1, state.state), (predicate, state));
         }
@@ -145,9 +151,9 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<(TFirst, TSecond, TThird)> WhereFirst<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TState, bool> predicate, TState state) where TState : notnull
+        public static IEnumerable<(TFirst, TSecond)> WhereSecond<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TSecond, TState, bool> predicate, TState state)
         {
-            return tuples.Where(static (tuple, state) => state.predicate(tuple.Item1, state.state), (predicate, state));
+            return tuples.Where(static (tuple, state) => state.predicate(tuple.Item2, state.state), (predicate, state));
         }
 
         [Pure]
@@ -159,7 +165,7 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<(TFirst, TSecond)> WhereSecond<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TSecond, TState, bool> predicate, TState state) where TState : notnull
+        public static IEnumerable<(TFirst, TSecond, TThird)> WhereSecond<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TSecond, TState, bool> predicate, TState state)
         {
             return tuples.Where(static (tuple, state) => state.predicate(tuple.Item2, state.state), (predicate, state));
         }
@@ -173,9 +179,9 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<(TFirst, TSecond, TThird)> WhereSecond<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TSecond, TState, bool> predicate, TState state) where TState : notnull
+        public static IEnumerable<(TFirst, TSecond, TThird)> WhereThird<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TThird, TState, bool> predicate, TState state)
         {
-            return tuples.Where(static (tuple, state) => state.predicate(tuple.Item2, state.state), (predicate, state));
+            return tuples.Where(static (tuple, state) => state.predicate(tuple.Item3, state.state), (predicate, state));
         }
 
         [Pure]
@@ -187,9 +193,9 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<(TFirst, TSecond, TThird)> WhereThird<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TThird, TState, bool> predicate, TState state) where TState : notnull
+        public static IEnumerable<TResult> Select<TFirst, TSecond, TResult, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, TResult> selector, TState state)
         {
-            return tuples.Where(static (tuple, state) => state.predicate(tuple.Item3, state.state), (predicate, state));
+            return tuples.Select(static (tuple, state) => state.selector(tuple.Item1, tuple.Item2, state.state), (selector, state));
         }
 
         [Pure]
@@ -201,9 +207,9 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> Select<TFirst, TSecond, TResult, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, TResult> selector, TState state) where TState : notnull
+        public static IEnumerable<TResult> Select<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, TResult> selector, TState state)
         {
-            return tuples.Select(static (tuple, state) => state.selector(tuple.Item1, tuple.Item2, state.state), (selector, state));
+            return tuples.Select(static (tuple, state) => state.selector(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (selector, state));
         }
 
         [Pure]
@@ -215,23 +221,9 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> Select<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, TResult> selector, TState state) where TState : notnull
+        public static IEnumerable<TResult> SelectFirsts<TFirst, TSecond, TResult, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TState, TResult> selector, TState state)
         {
-            return tuples.Select(static (tuple, state) => state.selector(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (selector, state));
-        }
-
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TFirst> SelectFirsts<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples)
-        {
-            return tuples.Select(static tuple => tuple.Item1);
-        }
-
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TFirst> SelectFirsts<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples)
-        {
-            return tuples.Select(static tuple => tuple.Item1);
+            return tuples.Select(static (tuple, state) => state.selector(tuple.Item1, state.state), (selector, state));
         }
 
         [Pure]
@@ -243,6 +235,20 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<TFirst> SelectFirsts<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples)
+        {
+            return tuples.Select(static tuple => tuple.Item1);
+        }
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<TResult> SelectFirsts<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TState, TResult> selector, TState state)
+        {
+            return tuples.Select(static (tuple, state) => state.selector(tuple.Item1, state.state), (selector, state));
+        }
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<TResult> SelectFirsts<TFirst, TSecond, TThird, TResult>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TResult> selector)
         {
             return tuples.Select(static (tuple, selector) => selector(tuple.Item1), selector);
@@ -250,30 +256,16 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectFirsts<TFirst, TSecond, TResult, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TState, TResult> selector, TState state) where TState : notnull
+        public static IEnumerable<TFirst> SelectFirsts<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples)
         {
-            return tuples.Select(static (tuple, state) => state.selector(tuple.Item1, state.state), (selector, state));
+            return tuples.Select(static tuple => tuple.Item1);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectFirsts<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TState, TResult> selector, TState state) where TState : notnull
+        public static IEnumerable<TResult> SelectSeconds<TFirst, TSecond, TResult, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TSecond, TState, TResult> selector, TState state)
         {
-            return tuples.Select(static (tuple, state) => state.selector(tuple.Item1, state.state), (selector, state));
-        }
-
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TSecond> SelectSeconds<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples)
-        {
-            return tuples.Select(static tuple => tuple.Item2);
-        }
-
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TSecond> SelectSeconds<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples)
-        {
-            return tuples.Select(static tuple => tuple.Item2);
+            return tuples.Select(static (tuple, state) => state.selector(tuple.Item2, state.state), (selector, state));
         }
 
         [Pure]
@@ -285,6 +277,20 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<TSecond> SelectSeconds<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples)
+        {
+            return tuples.Select(static tuple => tuple.Item2);
+        }
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<TResult> SelectSeconds<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TSecond, TState, TResult> selector, TState state)
+        {
+            return tuples.Select(static (tuple, state) => state.selector(tuple.Item2, state.state), (selector, state));
+        }
+
+        [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<TResult> SelectSeconds<TFirst, TSecond, TThird, TResult>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TSecond, TResult> selector)
         {
             return tuples.Select(static (tuple, selector) => selector(tuple.Item2), selector);
@@ -292,23 +298,16 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectSeconds<TFirst, TSecond, TResult, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TSecond, TState, TResult> selector, TState state) where TState : notnull
+        public static IEnumerable<TSecond> SelectSeconds<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples)
         {
-            return tuples.Select(static (tuple, state) => state.selector(tuple.Item2, state.state), (selector, state));
+            return tuples.Select(static tuple => tuple.Item2);
         }
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectSeconds<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TSecond, TState, TResult> selector, TState state) where TState : notnull
+        public static IEnumerable<TResult> SelectThirds<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TThird, TState, TResult> selector, TState state)
         {
-            return tuples.Select(static (tuple, state) => state.selector(tuple.Item2, state.state), (selector, state));
-        }
-
-        [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TThird> SelectThirds<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples)
-        {
-            return tuples.Select(static tuple => tuple.Item3);
+            return tuples.Select(static (tuple, state) => state.selector(tuple.Item3, state.state), (selector, state));
         }
 
         [Pure]
@@ -320,9 +319,9 @@ namespace UniT.Extensions
 
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<TResult> SelectThirds<TFirst, TSecond, TThird, TResult, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TThird, TState, TResult> selector, TState state) where TState : notnull
+        public static IEnumerable<TThird> SelectThirds<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples)
         {
-            return tuples.Select(static (tuple, state) => state.selector(tuple.Item3, state.state), (selector, state));
+            return tuples.Select(static tuple => tuple.Item3);
         }
 
         [Pure]
@@ -584,7 +583,7 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ForEach<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Action<TFirst, TSecond, TState> action, TState state) where TState : notnull
+        public static void ForEach<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Action<TFirst, TSecond, TState> action, TState state)
         {
             tuples.ForEach(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
         }
@@ -596,7 +595,7 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ForEach<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Action<TFirst, TSecond, TThird, TState> action, TState state) where TState : notnull
+        public static void ForEach<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Action<TFirst, TSecond, TThird, TState> action, TState state)
         {
             tuples.ForEach(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
         }
@@ -608,7 +607,7 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeForEach<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Action<TFirst, TSecond, TState> action, TState state) where TState : notnull
+        public static void SafeForEach<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Action<TFirst, TSecond, TState> action, TState state)
         {
             tuples.SafeForEach(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
         }
@@ -620,7 +619,7 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeForEach<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Action<TFirst, TSecond, TThird, TState> action, TState state) where TState : notnull
+        public static void SafeForEach<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Action<TFirst, TSecond, TThird, TState> action, TState state)
         {
             tuples.SafeForEach(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
         }

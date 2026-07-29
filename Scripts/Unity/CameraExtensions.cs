@@ -39,7 +39,7 @@ namespace UniT.Extensions
             if (camera.orthographic)
             {
                 camera.orthographicSize = size;
-                camera.transform.position = center - camera.transform.forward * 10f;
+                camera.transform.position = center - camera.transform.forward * 10;
             }
             else
             {

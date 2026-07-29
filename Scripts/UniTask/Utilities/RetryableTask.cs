@@ -15,7 +15,7 @@ namespace UniT.Extensions
         private readonly float retryIntervalMax;
         private readonly bool ignoreTimeScale;
 
-        public RetryableTask(int retryCount = -1, float retryIntervalSeconds = 1, float retryIntervalMultiplier = 2, float retryIntervalMax = 32, bool ignoreTimeScale = false)
+        public RetryableTask(int retryCount = -1, float retryIntervalSeconds = 1, float retryIntervalMultiplier = 2, float retryIntervalMax = 32, bool ignoreTimeScale = true)
         {
             this.retryCount = retryCount;
             this.retryIntervalSeconds = retryIntervalSeconds;
@@ -26,7 +26,27 @@ namespace UniT.Extensions
 
         private CancellationTokenSource? cts;
 
-        public async UniTask RunAsync<TState>(Func<TState, CancellationToken, UniTask<bool>> taskFactory, TState state) where TState : notnull
+        public async UniTask<bool> RunAsync<TState>(Func<TState, CancellationToken, UniTask<bool>> taskFactory, TState state)
+        {
+            this.cts ??= new();
+            var attempt = 0;
+            while (true)
+            {
+                if (await taskFactory(state, this.cts.Token)) return true;
+                if (attempt == this.retryCount) return false;
+                await UniTask.WaitForSeconds(
+                    Mathf.Min(
+                        this.retryIntervalSeconds * Mathf.Pow(this.retryIntervalMultiplier, attempt),
+                        this.retryIntervalMax
+                    ),
+                    this.ignoreTimeScale,
+                    cancellationToken: this.cts.Token
+                );
+                ++attempt;
+            }
+        }
+
+        public async UniTask RunAsync<TState>(Func<TState, CancellationToken, UniTask> taskFactory, TState state)
         {
             this.cts ??= new();
             var attempt = 0;
@@ -34,7 +54,8 @@ namespace UniT.Extensions
             {
                 try
                 {
-                    if (await taskFactory(state, this.cts.Token)) return;
+                    await taskFactory(state, this.cts.Token);
+                    return;
                 }
                 catch (Exception e) when (e is not OperationCanceledException)
                 {
@@ -42,29 +63,20 @@ namespace UniT.Extensions
                 }
                 await UniTask.WaitForSeconds(
                     Mathf.Min(
-                        this.retryIntervalSeconds * Mathf.Pow(this.retryIntervalMultiplier, ++attempt - 1),
+                        this.retryIntervalSeconds * Mathf.Pow(this.retryIntervalMultiplier, attempt),
                         this.retryIntervalMax
                     ),
                     this.ignoreTimeScale,
                     cancellationToken: this.cts.Token
                 );
+                ++attempt;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public UniTask RunAsync(Func<CancellationToken, UniTask<bool>> taskFactory)
+        public UniTask<bool> RunAsync(Func<CancellationToken, UniTask<bool>> taskFactory)
         {
             return this.RunAsync(static (taskFactory, ct) => taskFactory(ct), taskFactory);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public UniTask RunAsync<TState>(Func<TState, CancellationToken, UniTask> taskFactory, TState state) where TState : notnull
-        {
-            return this.RunAsync(static async (state, ct) =>
-            {
-                await state.taskFactory(state.state, ct);
-                return true;
-            }, (taskFactory, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

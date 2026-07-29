@@ -37,9 +37,9 @@ namespace UniT.Extensions
         [Pure]
         public static Func<object> GetEmptyConstructor(this Type type)
         {
-            var constructor = type.GetConstructors().SingleOrDefault(constructor => constructor.GetParameters().All(parameter => parameter.HasDefaultValue))
+            var constructor = type.GetConstructors().SingleOrDefault(static constructor => constructor.GetParameters().All(static parameter => parameter.HasDefaultValue))
                 ?? type.GetSingleConstructor();
-            var parameters = constructor.GetParameters().Select(parameter => parameter.HasDefaultValue ? parameter.DefaultValue : null).ToArray();
+            var parameters = constructor.GetParameters().Select(static parameter => parameter.HasDefaultValue ? parameter.DefaultValue : null).ToArray();
             return () => constructor.Invoke(parameters);
         }
 
