@@ -16,11 +16,10 @@ namespace UniT.Extensions
         public static T AggregateFromFirstOrDefault<T>(this IEnumerable<T> enumerable, Func<T, T, T> func, Func<T> defaultValueFactory)
         {
             using var enumerator = enumerable.GetEnumerator();
-            if (!enumerator.MoveNext()) return defaultValueFactory();
-            var current = enumerator.Current;
-            while (enumerator.MoveNext())
+            if (!enumerator.TryGetNext(out var current)) return defaultValueFactory();
+            while (enumerator.TryGetNext(out var next))
             {
-                current = func(current, enumerator.Current);
+                current = func(current, next);
             }
             return current;
         }
@@ -42,11 +41,19 @@ namespace UniT.Extensions
         #region Min
 
         [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T MinOrDefault<T>(this IEnumerable<T> enumerable, Func<T> defaultValueFactory, IComparer<T>? comparer = null)
         {
             comparer ??= Comparer<T>.Default;
-            return enumerable.AggregateFromFirstOrDefault((x, y) => comparer.Compare(x, y) < 0 ? x : y, defaultValueFactory);
+            using var enumerator = enumerable.GetEnumerator();
+            if (!enumerator.TryGetNext(out var current)) return defaultValueFactory();
+            while (enumerator.TryGetNext(out var next))
+            {
+                if (comparer.Compare(next, current) < 0)
+                {
+                    current = next;
+                }
+            }
+            return current;
         }
 
         [Pure]
@@ -66,11 +73,19 @@ namespace UniT.Extensions
         #region Max
 
         [Pure]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T MaxOrDefault<T>(this IEnumerable<T> enumerable, Func<T> defaultValueFactory, IComparer<T>? comparer = null)
         {
             comparer ??= Comparer<T>.Default;
-            return enumerable.AggregateFromFirstOrDefault((x, y) => comparer.Compare(x, y) > 0 ? x : y, defaultValueFactory);
+            using var enumerator = enumerable.GetEnumerator();
+            if (!enumerator.TryGetNext(out var current)) return defaultValueFactory();
+            while (enumerator.TryGetNext(out var next))
+            {
+                if (comparer.Compare(next, current) > 0)
+                {
+                    current = next;
+                }
+            }
+            return current;
         }
 
         [Pure]
@@ -94,19 +109,18 @@ namespace UniT.Extensions
         {
             comparer ??= Comparer<TKey>.Default;
             using var enumerator = enumerable.GetEnumerator();
-            if (!enumerator.MoveNext()) return defaultValueFactory();
-            var bestItem = enumerator.Current;
-            var bestKey = keySelector(bestItem);
-            while (enumerator.MoveNext())
+            if (!enumerator.TryGetNext(out var current)) return defaultValueFactory();
+            var currentKey = keySelector(current);
+            while (enumerator.TryGetNext(out var next))
             {
-                var key = keySelector(enumerator.Current);
-                if (comparer.Compare(key, bestKey) < 0)
+                var nextKey = keySelector(next);
+                if (comparer.Compare(nextKey, currentKey) < 0)
                 {
-                    bestItem = enumerator.Current;
-                    bestKey = key;
+                    current = next;
+                    currentKey = nextKey;
                 }
             }
-            return bestItem;
+            return current;
         }
 
         [Pure]
@@ -130,19 +144,18 @@ namespace UniT.Extensions
         {
             comparer ??= Comparer<TKey>.Default;
             using var enumerator = enumerable.GetEnumerator();
-            if (!enumerator.MoveNext()) return defaultValueFactory();
-            var bestItem = enumerator.Current;
-            var bestKey = keySelector(bestItem);
-            while (enumerator.MoveNext())
+            if (!enumerator.TryGetNext(out var current)) return defaultValueFactory();
+            var currentKey = keySelector(current);
+            while (enumerator.TryGetNext(out var next))
             {
-                var key = keySelector(enumerator.Current);
-                if (comparer.Compare(key, bestKey) > 0)
+                var nextKey = keySelector(next);
+                if (comparer.Compare(nextKey, currentKey) > 0)
                 {
-                    bestItem = enumerator.Current;
-                    bestKey = key;
+                    current = next;
+                    currentKey = nextKey;
                 }
             }
-            return bestItem;
+            return current;
         }
 
         [Pure]
@@ -609,11 +622,10 @@ namespace UniT.Extensions
         public static IEnumerable<(T, T)> Pairwise<T>(this IEnumerable<T> enumerable)
         {
             using var enumerator = enumerable.GetEnumerator();
-            if (!enumerator.MoveNext()) yield break;
-            var previous = enumerator.Current;
-            while (enumerator.MoveNext())
+            if (!enumerator.TryGetNext(out var current)) yield break;
+            while (enumerator.TryGetNext(out var next))
             {
-                yield return (previous, previous = enumerator.Current);
+                yield return (current, current = next);
             }
         }
 
@@ -621,12 +633,11 @@ namespace UniT.Extensions
         public static IEnumerable<T> Accumulate<T>(this IEnumerable<T> enumerable, Func<T, T, T> accumulator)
         {
             using var enumerator = enumerable.GetEnumerator();
-            if (!enumerator.MoveNext()) yield break;
-            var current = enumerator.Current;
+            if (!enumerator.TryGetNext(out var current)) yield break;
             yield return current;
-            while (enumerator.MoveNext())
+            while (enumerator.TryGetNext(out var next))
             {
-                yield return current = accumulator(current, enumerator.Current);
+                yield return current = accumulator(current, next);
             }
         }
 

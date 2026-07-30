@@ -14,13 +14,13 @@ namespace UniT.Extensions
         {
             using var enumerator1 = first.GetEnumerator();
             using var enumerator2 = second.GetEnumerator();
-            var hasValue1 = enumerator1.MoveNext();
-            var hasValue2 = enumerator2.MoveNext();
+            var hasValue1 = enumerator1.TryGetNext(out var item1);
+            var hasValue2 = enumerator2.TryGetNext(out var item2);
             while (hasValue1 && hasValue2)
             {
-                yield return resultSelector(enumerator1.Current, enumerator2.Current, state);
-                hasValue1 = enumerator1.MoveNext();
-                hasValue2 = enumerator2.MoveNext();
+                yield return resultSelector(item1!, item2!, state);
+                hasValue1 = enumerator1.TryGetNext(out item1);
+                hasValue2 = enumerator2.TryGetNext(out item2);
             }
             if (hasValue1 || hasValue2) throw new InvalidOperationException("The number of items are different. If this is intentional, use ZipShortest or ZipLongest instead.");
         }
@@ -31,15 +31,15 @@ namespace UniT.Extensions
             using var enumerator1 = first.GetEnumerator();
             using var enumerator2 = second.GetEnumerator();
             using var enumerator3 = third.GetEnumerator();
-            var hasValue1 = enumerator1.MoveNext();
-            var hasValue2 = enumerator2.MoveNext();
-            var hasValue3 = enumerator3.MoveNext();
+            var hasValue1 = enumerator1.TryGetNext(out var item1);
+            var hasValue2 = enumerator2.TryGetNext(out var item2);
+            var hasValue3 = enumerator3.TryGetNext(out var item3);
             while (hasValue1 && hasValue2 && hasValue3)
             {
-                yield return resultSelector(enumerator1.Current, enumerator2.Current, enumerator3.Current, state);
-                hasValue1 = enumerator1.MoveNext();
-                hasValue2 = enumerator2.MoveNext();
-                hasValue3 = enumerator3.MoveNext();
+                yield return resultSelector(item1!, item2!, item3!, state);
+                hasValue1 = enumerator1.TryGetNext(out item1);
+                hasValue2 = enumerator2.TryGetNext(out item2);
+                hasValue3 = enumerator3.TryGetNext(out item3);
             }
             if (hasValue1 || hasValue2 || hasValue3) throw new InvalidOperationException("The number of items are different. If this is intentional, use ZipShortest or ZipLongest instead.");
         }
