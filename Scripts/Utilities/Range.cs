@@ -10,12 +10,15 @@ namespace UniT.Extensions
     public static class Ranges
     {
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static From From(int start) => new(start);
 
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RangeEnumerable To(int stop) => new From(0).To(stop);
 
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RangeEnumerable Take(int count) => new From(0).Take(count);
     }
 
@@ -29,6 +32,7 @@ namespace UniT.Extensions
         }
 
         [Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RangeEnumerable To(int stop)
         {
             return new(this.start, stop);
