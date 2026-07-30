@@ -442,15 +442,15 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeForEach<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TKey, TValue, TState> action, TState state) where TKey : notnull
+        public static void SnapshotForEach<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TKey, TValue, TState> action, TState state) where TKey : notnull
         {
-            dictionary.SafeForEach(static (kv, state) => state.action(kv.Key, kv.Value, state.state), (action, state));
+            dictionary.SnapshotForEach(static (kv, state) => state.action(kv.Key, kv.Value, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeForEach<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TKey, TValue> action) where TKey : notnull
+        public static void SnapshotForEach<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Action<TKey, TValue> action) where TKey : notnull
         {
-            dictionary.SafeForEach(static (kv, action) => action(kv.Key, kv.Value), action);
+            dictionary.SnapshotForEach(static (kv, action) => action(kv.Key, kv.Value), action);
         }
 
         [Pure]

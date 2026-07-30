@@ -31,7 +31,7 @@ namespace UniT.Extensions
             await enumerable.Select(action);
         }
 
-        public static async UniTask SafeForEachAwaitAsync<T, TState>(this IEnumerable<T> enumerable, Func<T, TState, UniTask> action, TState state)
+        public static async UniTask SnapshotForEachAwaitAsync<T, TState>(this IEnumerable<T> enumerable, Func<T, TState, UniTask> action, TState state)
         {
             if (enumerable is ICollection<T> collection)
             {
@@ -57,12 +57,12 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAwaitAsync<T>(this IEnumerable<T> enumerable, Func<T, UniTask> action)
+        public static UniTask SnapshotForEachAwaitAsync<T>(this IEnumerable<T> enumerable, Func<T, UniTask> action)
         {
-            return enumerable.SafeForEachAwaitAsync(static (item, action) => action(item), action);
+            return enumerable.SnapshotForEachAwaitAsync(static (item, action) => action(item), action);
         }
 
-        public static async UniTask SafeForEachAsync<T, TState>(this IEnumerable<T> enumerable, Func<T, TState, UniTask> action, TState state)
+        public static async UniTask SnapshotForEachAsync<T, TState>(this IEnumerable<T> enumerable, Func<T, TState, UniTask> action, TState state)
         {
             if (enumerable is ICollection<T> collection)
             {
@@ -85,9 +85,9 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAsync<T>(this IEnumerable<T> enumerable, Func<T, UniTask> action)
+        public static UniTask SnapshotForEachAsync<T>(this IEnumerable<T> enumerable, Func<T, UniTask> action)
         {
-            return enumerable.SafeForEachAsync(static (item, action) => action(item), action);
+            return enumerable.SnapshotForEachAsync(static (item, action) => action(item), action);
         }
 
         public static async UniTask<TResult[]> SelectAsync<T, TResult, TState>(this IEnumerable<T> enumerable, Func<T, TState, UniTask<TResult>> selector, TState state)

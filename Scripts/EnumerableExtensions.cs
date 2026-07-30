@@ -235,7 +235,7 @@ namespace UniT.Extensions
             foreach (var item in enumerable) action(item);
         }
 
-        public static void SafeForEach<T, TState>(this IEnumerable<T> enumerable, Action<T, TState> action, TState state)
+        public static void SnapshotForEach<T, TState>(this IEnumerable<T> enumerable, Action<T, TState> action, TState state)
         {
             if (enumerable is ICollection<T> collection)
             {
@@ -258,9 +258,9 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        public static void SnapshotForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
-            enumerable.SafeForEach(static (item, action) => action(item), action);
+            enumerable.SnapshotForEach(static (item, action) => action(item), action);
         }
 
         [Pure]

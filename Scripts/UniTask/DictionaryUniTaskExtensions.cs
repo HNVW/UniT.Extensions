@@ -130,27 +130,27 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAwaitAsync<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TState, UniTask> action, TState state) where TKey : notnull
+        public static UniTask SnapshotForEachAwaitAsync<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TState, UniTask> action, TState state) where TKey : notnull
         {
-            return dictionary.SafeForEachAwaitAsync(static (kv, state) => state.action(kv.Key, kv.Value, state.state), (action, state));
+            return dictionary.SnapshotForEachAwaitAsync(static (kv, state) => state.action(kv.Key, kv.Value, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAwaitAsync<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, UniTask> action) where TKey : notnull
+        public static UniTask SnapshotForEachAwaitAsync<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, UniTask> action) where TKey : notnull
         {
-            return dictionary.SafeForEachAwaitAsync(static (kv, action) => action(kv.Key, kv.Value), action);
+            return dictionary.SnapshotForEachAwaitAsync(static (kv, action) => action(kv.Key, kv.Value), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAsync<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TState, UniTask> action, TState state) where TKey : notnull
+        public static UniTask SnapshotForEachAsync<TKey, TValue, TState>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, TState, UniTask> action, TState state) where TKey : notnull
         {
-            return dictionary.SafeForEachAsync(static (kv, state) => state.action(kv.Key, kv.Value, state.state), (action, state));
+            return dictionary.SnapshotForEachAsync(static (kv, state) => state.action(kv.Key, kv.Value, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAsync<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, UniTask> action) where TKey : notnull
+        public static UniTask SnapshotForEachAsync<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> dictionary, Func<TKey, TValue, UniTask> action) where TKey : notnull
         {
-            return dictionary.SafeForEachAsync(static (kv, action) => action(kv.Key, kv.Value), action);
+            return dictionary.SnapshotForEachAsync(static (kv, action) => action(kv.Key, kv.Value), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

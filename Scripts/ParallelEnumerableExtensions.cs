@@ -2,6 +2,7 @@
 namespace UniT.Extensions
 {
     using System;
+    using System.Buffers;
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -16,9 +17,26 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeParallelForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        public static void SnapshotParallelForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
-            enumerable.ToArray().ParallelForEach(action);
+            if (enumerable is ICollection<T> collection)
+            {
+                if (collection.Count is 0) return;
+                var array = ArrayPool<T>.Shared.Rent(collection.Count);
+                try
+                {
+                    collection.CopyTo(array, 0);
+                    array.Take(collection.Count).ParallelForEach(action);
+                }
+                finally
+                {
+                    ArrayPool<T>.Shared.Return(array, RuntimeHelpers.IsReferenceOrContainsReferences<T>());
+                }
+            }
+            else
+            {
+                enumerable.ToArray().ParallelForEach(action);
+            }
         }
     }
 }

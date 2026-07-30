@@ -57,51 +57,51 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAwaitAsync<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, UniTask> action, TState state)
+        public static UniTask SnapshotForEachAwaitAsync<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, UniTask> action, TState state)
         {
-            return tuples.SafeForEachAwaitAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
+            return tuples.SnapshotForEachAwaitAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAwaitAsync<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, UniTask> action)
+        public static UniTask SnapshotForEachAwaitAsync<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, UniTask> action)
         {
-            return tuples.SafeForEachAwaitAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2), action);
+            return tuples.SnapshotForEachAwaitAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAwaitAsync<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, UniTask> action, TState state)
+        public static UniTask SnapshotForEachAwaitAsync<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, UniTask> action, TState state)
         {
-            return tuples.SafeForEachAwaitAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
+            return tuples.SnapshotForEachAwaitAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAwaitAsync<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, UniTask> action)
+        public static UniTask SnapshotForEachAwaitAsync<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, UniTask> action)
         {
-            return tuples.SafeForEachAwaitAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2, tuple.Item3), action);
+            return tuples.SnapshotForEachAwaitAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2, tuple.Item3), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAsync<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, UniTask> action, TState state)
+        public static UniTask SnapshotForEachAsync<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, TState, UniTask> action, TState state)
         {
-            return tuples.SafeForEachAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
+            return tuples.SnapshotForEachAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAsync<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, UniTask> action)
+        public static UniTask SnapshotForEachAsync<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Func<TFirst, TSecond, UniTask> action)
         {
-            return tuples.SafeForEachAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2), action);
+            return tuples.SnapshotForEachAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAsync<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, UniTask> action, TState state)
+        public static UniTask SnapshotForEachAsync<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, TState, UniTask> action, TState state)
         {
-            return tuples.SafeForEachAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
+            return tuples.SnapshotForEachAsync(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static UniTask SafeForEachAsync<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, UniTask> action)
+        public static UniTask SnapshotForEachAsync<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Func<TFirst, TSecond, TThird, UniTask> action)
         {
-            return tuples.SafeForEachAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2, tuple.Item3), action);
+            return tuples.SnapshotForEachAsync(static (tuple, action) => action(tuple.Item1, tuple.Item2, tuple.Item3), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

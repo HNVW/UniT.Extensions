@@ -601,27 +601,27 @@ namespace UniT.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeForEach<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Action<TFirst, TSecond> action)
+        public static void SnapshotForEach<TFirst, TSecond>(this IEnumerable<(TFirst, TSecond)> tuples, Action<TFirst, TSecond> action)
         {
-            tuples.SafeForEach(static (tuple, action) => action(tuple.Item1, tuple.Item2), action);
+            tuples.SnapshotForEach(static (tuple, action) => action(tuple.Item1, tuple.Item2), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeForEach<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Action<TFirst, TSecond, TState> action, TState state)
+        public static void SnapshotForEach<TFirst, TSecond, TState>(this IEnumerable<(TFirst, TSecond)> tuples, Action<TFirst, TSecond, TState> action, TState state)
         {
-            tuples.SafeForEach(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
+            tuples.SnapshotForEach(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, state.state), (action, state));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeForEach<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Action<TFirst, TSecond, TThird> action)
+        public static void SnapshotForEach<TFirst, TSecond, TThird>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Action<TFirst, TSecond, TThird> action)
         {
-            tuples.SafeForEach(static (tuple, action) => action(tuple.Item1, tuple.Item2, tuple.Item3), action);
+            tuples.SnapshotForEach(static (tuple, action) => action(tuple.Item1, tuple.Item2, tuple.Item3), action);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void SafeForEach<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Action<TFirst, TSecond, TThird, TState> action, TState state)
+        public static void SnapshotForEach<TFirst, TSecond, TThird, TState>(this IEnumerable<(TFirst, TSecond, TThird)> tuples, Action<TFirst, TSecond, TThird, TState> action, TState state)
         {
-            tuples.SafeForEach(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
+            tuples.SnapshotForEach(static (tuple, state) => state.action(tuple.Item1, tuple.Item2, tuple.Item3, state.state), (action, state));
         }
 
         [Pure]
