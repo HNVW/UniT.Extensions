@@ -5,7 +5,11 @@ namespace UniT.Extensions
 
     public static class Item
     {
-        public static T S<T>(T item) => item;
+        public static T Identity<T>(T item) => item;
+
+        public static TBase UpCast<TDerived, TBase>(TDerived item) where TDerived : TBase => item;
+
+        public static TDerived DownCast<TBase, TDerived>(TBase item) where TDerived : TBase => (TDerived)item!;
 
         public static bool Is<T>(object item) where T : notnull => item is T;
 

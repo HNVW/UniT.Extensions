@@ -201,7 +201,7 @@ namespace UniT.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<T> Flat<T>(this IEnumerable<IEnumerable<T>> enumerable)
         {
-            return enumerable.SelectMany(Item.S);
+            return enumerable.SelectMany(Item.Identity);
         }
 
         [Pure]

@@ -159,49 +159,5 @@ namespace UniT.Extensions
                 (selector, subProgresses, cancellationToken)
             );
         }
-
-        public static async UniTask ContinueWith<T, TState>(this UniTask<T> task, Action<T, TState> continuationFunction, TState state)
-        {
-            continuationFunction(await task, state);
-        }
-
-        public static async UniTask ContinueWith<T, TState>(this UniTask<T> task, Func<T, TState, UniTask> continuationFunction, TState state)
-        {
-            await continuationFunction(await task, state);
-        }
-
-        public static async UniTask<TResult> ContinueWith<T, TResult, TState>(this UniTask<T> task, Func<T, TState, TResult> continuationFunction, TState state)
-        {
-            return continuationFunction(await task, state);
-        }
-
-        public static async UniTask<TResult> ContinueWith<T, TResult, TState>(this UniTask<T> task, Func<T, TState, UniTask<TResult>> continuationFunction, TState state)
-        {
-            return await continuationFunction(await task, state);
-        }
-
-        public static async UniTask ContinueWith<TState>(this UniTask task, Action<TState> continuationFunction, TState state)
-        {
-            await task;
-            continuationFunction(state);
-        }
-
-        public static async UniTask ContinueWith<TState>(this UniTask task, Func<TState, UniTask> continuationFunction, TState state)
-        {
-            await task;
-            await continuationFunction(state);
-        }
-
-        public static async UniTask<TResult> ContinueWith<TResult, TState>(this UniTask task, Func<TState, TResult> continuationFunction, TState state)
-        {
-            await task;
-            return continuationFunction(state);
-        }
-
-        public static async UniTask<TResult> ContinueWith<TResult, TState>(this UniTask task, Func<TState, UniTask<TResult>> continuationFunction, TState state)
-        {
-            await task;
-            return await continuationFunction(state);
-        }
     }
 }
