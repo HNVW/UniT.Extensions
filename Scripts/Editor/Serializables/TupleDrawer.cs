@@ -36,7 +36,7 @@ namespace UniT.Extensions.Editor
                 EditorGUIUtility.labelWidth = width;
                 EditorGUI.PropertyField(
                     position,
-                    property.FindPropertyRelative($"Item{index + 1}".ToBackingFieldName()),
+                    property.FindPropertyRelative($"item{index + 1}"),
                     childLabel,
                     includeChildren: true
                 );

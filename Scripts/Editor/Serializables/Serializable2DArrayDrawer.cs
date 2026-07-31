@@ -7,13 +7,13 @@ namespace UniT.Extensions.Editor
     [CustomPropertyDrawer(typeof(SerializeReference2DArray<>), useForChildren: true)]
     internal sealed class Serializable2DArrayDrawer : NestedPropertyDrawer
     {
-        protected override string PropertyName => "columns";
+        protected override string PropertyName => "rows";
     }
 
-    [CustomPropertyDrawer(typeof(Serializable2DArray<>.Column), useForChildren: true)]
-    [CustomPropertyDrawer(typeof(SerializeReference2DArray<>.Column), useForChildren: true)]
-    internal sealed class Serializable2DArrayColumnDrawer : NestedPropertyDrawer
+    [CustomPropertyDrawer(typeof(Serializable2DArray<>.Row), useForChildren: true)]
+    [CustomPropertyDrawer(typeof(SerializeReference2DArray<>.Row), useForChildren: true)]
+    internal sealed class Serializable2DArrayRowDrawer : NestedPropertyDrawer
     {
-        protected override string PropertyName => "Cells".ToBackingFieldName();
+        protected override string PropertyName => "cells";
     }
 }

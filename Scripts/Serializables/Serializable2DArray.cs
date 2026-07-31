@@ -7,9 +7,9 @@ namespace UniT.Extensions
     using UnityEngine;
 
     [Serializable]
-    public class Serializable2DArray<TItem> : IEnumerable<TItem>, ISerializationCallbackReceiver
+    public class Serializable2DArray<T> : IEnumerable<T>, ISerializationCallbackReceiver
     {
-        [SerializeField] private Column[] columns;
+        [SerializeField] private Row[] rows;
 
         public Serializable2DArray() : this(0, 0)
         {
@@ -17,43 +17,42 @@ namespace UniT.Extensions
 
         public Serializable2DArray(int width, int height)
         {
-            this.columns = new Column[width];
-            for (var i = 0; i < width; ++i) this.columns[i] = new(height);
+            this.rows = new Row[height];
+            for (var y = 0; y < height; ++y) this.rows[y] = new(width);
         }
 
-        public int Width => this.columns.Length;
+        public int Width => this.rows.Length > 0 ? this.rows[0].Cells.Length : 0;
 
-        public int Height => this.columns.Length > 0 ? this.columns[0].Height : 0;
+        public int Height => this.rows.Length;
 
-        public TItem this[int x, int y] { get => this.columns[x].Cells[y]; set => this.columns[x].Cells[y] = value; }
+        public T this[int x, int y] { get => this.rows[y].Cells[x]; set => this.rows[y].Cells[x] = value; }
 
-        public IEnumerable<TItem> GetColumn(int x) => this.columns[x].Cells;
+        public IEnumerable<T> GetColumn(int x) => this.rows.Select(static (row, x) => row.Cells[x], x);
 
-        public IEnumerable<TItem> GetRow(int y) => this.columns.Select(static (column, y) => column.Cells[y], y);
+        public IEnumerable<T> GetRow(int y) => this.rows[y].Cells;
 
-        public IEnumerator<TItem> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
-            for (var y = 0; y < this.Height; ++y)
+            foreach (var row in this.rows)
             {
-                for (var x = 0; x < this.Width; ++x)
+                foreach (var cell in row.Cells)
                 {
-                    yield return this.columns[x].Cells[y];
+                    yield return cell;
                 }
             }
         }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
-            for (var x = 0; x < this.Width; ++x)
+            if (this.rows.Length is 0) return;
+            var newWidth = this.rows[0].Cells.Length;
+            for (var y = 1; y < this.rows.Length; ++y)
             {
-                if (this.columns[x].Height == this.Height) continue;
-                var oldColumn = this.columns[x];
-                this.columns[x] = new(this.Height);
-                var height = Mathf.Min(oldColumn.Height, this.Height);
-                for (var y = 0; y < height; ++y)
-                {
-                    this.columns[x].Cells[y] = oldColumn.Cells[y];
-                }
+                var oldRow = this.rows[y].Cells;
+                var oldWidth = oldRow.Length;
+                if (oldWidth == newWidth) continue;
+                this.rows[y] = new Row(newWidth);
+                Array.Copy(oldRow, this.rows[y].Cells, Mathf.Min(oldWidth, newWidth));
             }
         }
 
@@ -62,15 +61,19 @@ namespace UniT.Extensions
         IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
         [Serializable]
-        public struct Column
+        public sealed class Row
         {
-            [field: SerializeField] public TItem[] Cells { get; private set; }
+            [SerializeField] private T[] cells;
 
-            public readonly int Height => this.Cells.Length;
+            public T[] Cells => this.cells;
 
-            public Column(int height)
+            public Row() : this(0)
             {
-                this.Cells = new TItem[height];
+            }
+
+            public Row(int width)
+            {
+                this.cells = new T[width];
             }
         }
     }

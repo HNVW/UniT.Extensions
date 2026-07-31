@@ -10,7 +10,16 @@ namespace UniT.Extensions
     {
         [SerializeField]
         [TupleDisplayNames("Key", "Value")]
-        private List<SerializableTuple<TKey, TValue>> values = new();
+        private List<SerializableTuple<TKey, TValue>> values;
+
+        public SerializableDictionary() : this(new())
+        {
+        }
+
+        public SerializableDictionary(List<SerializableTuple<TKey, TValue>> values)
+        {
+            this.values = values;
+        }
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {
