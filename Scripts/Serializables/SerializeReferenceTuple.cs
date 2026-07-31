@@ -6,16 +6,16 @@ namespace UniT.Extensions
     using UnityEngine;
 
     [Serializable]
-    public class SerializableTuple<T1, T2> : ITuple
+    public class SerializeReferenceTuple<T1, T2> : ITuple
     {
-        [field: SerializeField] public T1 Item1 { get; private set; }
-        [field: SerializeField] public T2 Item2 { get; private set; }
+        [field: SerializeReference] public T1 Item1 { get; private set; }
+        [field: SerializeReference] public T2 Item2 { get; private set; }
 
-        public SerializableTuple() : this(default!, default!)
+        public SerializeReferenceTuple() : this(default!, default!)
         {
         }
 
-        public SerializableTuple(T1 item1, T2 item2)
+        public SerializeReferenceTuple(T1 item1, T2 item2)
         {
             this.Item1 = item1;
             this.Item2 = item2;
@@ -38,17 +38,17 @@ namespace UniT.Extensions
     }
 
     [Serializable]
-    public class SerializableTuple<T1, T2, T3> : ITuple
+    public class SerializeReferenceTuple<T1, T2, T3> : ITuple
     {
-        [field: SerializeField] public T1 Item1 { get; private set; }
-        [field: SerializeField] public T2 Item2 { get; private set; }
-        [field: SerializeField] public T3 Item3 { get; private set; }
+        [field: SerializeReference] public T1 Item1 { get; private set; }
+        [field: SerializeReference] public T2 Item2 { get; private set; }
+        [field: SerializeReference] public T3 Item3 { get; private set; }
 
-        public SerializableTuple() : this(default!, default!, default!)
+        public SerializeReferenceTuple() : this(default!, default!, default!)
         {
         }
 
-        public SerializableTuple(T1 item1, T2 item2, T3 item3)
+        public SerializeReferenceTuple(T1 item1, T2 item2, T3 item3)
         {
             this.Item1 = item1;
             this.Item2 = item2;
@@ -74,18 +74,18 @@ namespace UniT.Extensions
     }
 
     [Serializable]
-    public class SerializableTuple<T1, T2, T3, T4> : ITuple
+    public class SerializeReferenceTuple<T1, T2, T3, T4> : ITuple
     {
-        [field: SerializeField] public T1 Item1 { get; private set; }
-        [field: SerializeField] public T2 Item2 { get; private set; }
-        [field: SerializeField] public T3 Item3 { get; private set; }
-        [field: SerializeField] public T4 Item4 { get; private set; }
+        [field: SerializeReference] public T1 Item1 { get; private set; }
+        [field: SerializeReference] public T2 Item2 { get; private set; }
+        [field: SerializeReference] public T3 Item3 { get; private set; }
+        [field: SerializeReference] public T4 Item4 { get; private set; }
 
-        public SerializableTuple() : this(default!, default!, default!, default!)
+        public SerializeReferenceTuple() : this(default!, default!, default!, default!)
         {
         }
 
-        public SerializableTuple(T1 item1, T2 item2, T3 item3, T4 item4)
+        public SerializeReferenceTuple(T1 item1, T2 item2, T3 item3, T4 item4)
         {
             this.Item1 = item1;
             this.Item2 = item2;

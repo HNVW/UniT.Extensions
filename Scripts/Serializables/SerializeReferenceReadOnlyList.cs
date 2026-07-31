@@ -7,15 +7,15 @@ namespace UniT.Extensions
     using UnityEngine;
 
     [Serializable]
-    public class SerializableReadOnlyList<T> : IReadOnlyList<T>
+    public class SerializeReferenceReadOnlyList<T> : IReadOnlyList<T>
     {
-        [SerializeField] private List<T> values;
+        [SerializeReference] private List<T> values;
 
-        public SerializableReadOnlyList() : this(new())
+        public SerializeReferenceReadOnlyList() : this(new())
         {
         }
 
-        public SerializableReadOnlyList(List<T> values)
+        public SerializeReferenceReadOnlyList(List<T> values)
         {
             this.values = values;
         }

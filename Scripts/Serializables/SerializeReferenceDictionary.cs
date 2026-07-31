@@ -6,11 +6,11 @@ namespace UniT.Extensions
     using UnityEngine;
 
     [Serializable]
-    public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver where TKey : notnull
+    public class SerializeReferenceDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver where TKey : notnull
     {
         [SerializeField]
         [TupleDisplayNames("Key", "Value")]
-        private List<SerializableTuple<TKey, TValue>> values = new();
+        private List<SerializeReferenceTuple<TKey, TValue>> values = new();
 
         void ISerializationCallbackReceiver.OnBeforeSerialize()
         {

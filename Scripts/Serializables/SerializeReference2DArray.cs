@@ -7,15 +7,15 @@ namespace UniT.Extensions
     using UnityEngine;
 
     [Serializable]
-    public class Serializable2DArray<TItem> : IEnumerable<TItem>, ISerializationCallbackReceiver
+    public class SerializeReference2DArray<TItem> : IEnumerable<TItem>, ISerializationCallbackReceiver
     {
         [SerializeField] private Column[] columns;
 
-        public Serializable2DArray() : this(0, 0)
+        public SerializeReference2DArray() : this(0, 0)
         {
         }
 
-        public Serializable2DArray(int width, int height)
+        public SerializeReference2DArray(int width, int height)
         {
             this.columns = new Column[width];
             for (var i = 0; i < width; ++i) this.columns[i] = new(height);
@@ -64,7 +64,7 @@ namespace UniT.Extensions
         [Serializable]
         public struct Column
         {
-            [field: SerializeField] public TItem[] Cells { get; private set; }
+            [field: SerializeReference] public TItem[] Cells { get; private set; }
 
             public readonly int Height => this.Cells.Length;
 
